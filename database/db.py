@@ -1,55 +1,92 @@
-import pytz
-
 from datetime import datetime
 from collections import defaultdict
 
 from sqlalchemy import func, desc
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import sessionmaker
+from aiogram.types import Message, CallbackQuery
 
 from utils.logs import log
-from database.models import User, SellLog, Reserve, Lots, timezone
+from database.models import User, SellLog, Reserve, Lots, timezone, session
 
 
-class UserDb:
-    def __init__(self, session: sessionmaker, telegram_id: str, username: str, name: str) -> None:
+class Telegram:
+    def data(self, object: Message | CallbackQuery) -> "Telegram":
+        if isinstance(object, CallbackQuery):
+            self.telegram_id = object.message.chat.id
+            self.message_id = object.message.message_id
+            self.username = object.message.chat.username
+            self.name = object.message.chat.first_name
+        elif isinstance(object, Message):
+            self.telegram_id = object.chat.id
+            self.message_id = object.message_id
+            self.username = object.chat.username
+            self.name = object.chat.first_name
+        return self
+
+
+class UserDb(Telegram):
+    def __init__(self) -> None:
         self.user = User
         self.session = session
-        self.telegram_id = telegram_id
-        self.username = username
-        self.name = name
+        self.telegram = Telegram()
 
-    def user_availability(self) -> bool:
-        """
-        Checks if user is in the database. If user is found, refreshes last visit parameter.
+    def refresh_user(self, user: User, object: Message|CallbackQuery) -> None:
+        telegram = self.telegram.data(object)
+        
+        # Refresh last visit parameter
+        user.last_visit = datetime.now(timezone)
+        log.info(f'ID: {telegram.telegram_id}| Username: {telegram.username}| Refreshed last visit time.')
+        # Check username. If it is different, change it
+        if user.username != telegram.username:
+            log.info(f'ID: {telegram.telegram_id}| Username: {telegram.username}| Changed username in the database. Old: {user.username}')
+            user.username = self.username
 
-        Returns:
-            bool: True if user is in the database, False if not.
-        """
+    def get_user(self, object: Message|CallbackQuery) -> dict|None:
+        telegram = self.telegram.data(object)
+
         with self.session:
-            user = self.session.query(User).filter_by(telegram_id=self.telegram_id).first()
+            user = self.session.query(User).filter_by(telegram_id=telegram.telegram_id).first()
             if user:
-                # Refresh last visit parameter
-                user.last_visit = datetime.now(timezone)
-                log.info(f'ID: {self.telegram_id}| Username: {self.username}| Was already in the database. Last visit refreshed')
-                return True
+                self.refresh_user(
+                    user=user, 
+                    object=object
+                    )
+
+                data = {
+                    'name': user.name,
+                    'username': user.username,
+                    'balance': user.balance,
+                    'language': user.language,
+                    'is_ban': user.is_ban
+                }
+                log.info(f'ID: {telegram.telegram_id}| Username: {telegram.username}| Data: {data}| Was already in the database')
+                return data
+
             else:
-                log.info(f'ID: {self.telegram_id}| Username: {self.username}| User not found')
-                return False
+                log.info(f'ID: {telegram.telegram_id}| Username: {telegram.username}| User not found')
+                return {}
     
-    def add_user(self, language: str) -> None:
+    def create_user(self, object: Message|CallbackQuery, language: str = 'RUS') -> None:
+        telegram = self.telegram.data(object)
+
         with self.session:
             new_user = User(
-                telegram_id= self.telegram_id,
-                name= self.name,
-                username= self.username,
+                telegram_id= telegram.telegram_id,
+                name= telegram.name,
+                username= telegram.username,
                 balance= 0,
                 language= language,
                 last_visit= datetime.now(timezone)
             )
             self.session.add(new_user)
-            log.info(f"ID: {self.telegram_id}| Username: {self.username}| Added to the database")
+            log.info(f"ID: {telegram.telegram_id}| Username: {telegram.username}| Added to the database")
             self.session.commit()
+
+
+
+
+
+
 
     def topup_balance(self, new_balance: str) -> bool:
         with self.session:
@@ -144,7 +181,7 @@ class UserDb:
 
 
 class SelllogDb:
-    def __init__(self, session: sessionmaker, telegram_id: str, username: str, name: str) -> None:
+    def __init__(self, telegram_id: str, username: str, name: str) -> None:
         self.user = User
         self.session = session
         self.telegram_id = telegram_id
@@ -189,7 +226,7 @@ class SelllogDb:
 
 
 class ReserveDb:
-    def __init__(self, session: sessionmaker, telegram_id: str, username: str) -> None:
+    def __init__(self, telegram_id: str, username: str) -> None:
         self.user = User
         self.session = session
         self.telegram_id = telegram_id
@@ -337,7 +374,7 @@ class ReserveDb:
 
 
 class LotsDb:
-    def __init__(self, session: sessionmaker, telegram_id: str, username: str) -> None:
+    def __init__(self, telegram_id: str, username: str) -> None:
         self.session = session
         self.telegram_id = telegram_id
 

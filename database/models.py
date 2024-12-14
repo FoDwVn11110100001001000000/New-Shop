@@ -1,21 +1,15 @@
-import os
 import pytz
 
 from datetime import datetime
-from collections import defaultdict
-from dotenv import load_dotenv
-
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, BigInteger, Text
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from env import Config as config
 
-load_dotenv()
 
-DATABASE_URL = os.environ.get('DATABASE')
-TIMEZONE = os.environ.get('TIMEZONE')
-timezone = pytz.timezone(TIMEZONE)
+timezone = pytz.timezone(config.timezone)
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(config.database_url)
 Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
