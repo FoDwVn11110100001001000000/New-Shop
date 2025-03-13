@@ -1,10 +1,17 @@
+"""
+This module contains functions for logging.
+"""
+
 import sys
 
-from loguru import logger
 from datetime import datetime
+from loguru import logger
 
 
 class Logger:
+    """
+    Class for logging.
+    """
     def __init__(self) -> None:
         current_date = datetime.now().strftime("%d.%m.%Y")
         self.path = f"logs/{current_date}.log"
@@ -13,11 +20,17 @@ class Logger:
         self.level = "INFO"
 
     def init_logger(self):
+        """
+        Initializes logger with the specified path, rotation, retention, and level.
+
+        Returns logger object.
+        """
+
         logger.remove()
         logger.add(
-            self.path, 
-            rotation=self.rotation, 
-            retention=self.retention, 
+            self.path,
+            rotation=self.rotation,
+            retention=self.retention,
             level=self.level
             )
 

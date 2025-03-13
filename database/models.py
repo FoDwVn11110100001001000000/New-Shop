@@ -1,9 +1,12 @@
-import pytz
+"""
+This module contains classes for working with the database.
+"""
 
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, BigInteger, Text
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+import pytz
 from env import Config as config
 
 
@@ -16,6 +19,9 @@ Base = declarative_base()
 
 
 class User(Base):
+    """
+    User database model.
+    """
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -28,6 +34,9 @@ class User(Base):
     is_ban = Column(Boolean, default=False)
 
 class SellLog(Base):
+    """"
+    Sell log database model.
+    """
     __tablename__ = 'sell list'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -40,6 +49,9 @@ class SellLog(Base):
     price = Column(String)
 
 class Reserve(Base):
+    """
+    Reserve database model
+    """
     __tablename__ = 'reserve'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -51,6 +63,9 @@ class Reserve(Base):
     reserve_time_end = Column(DateTime)
 
 class Lots(Base):
+    """
+    Lots database model
+    """
     __tablename__ = 'accounts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -59,6 +74,9 @@ class Lots(Base):
     added_by = Column(String)
 
 class Products(Base):
+    """
+    Products database model
+    """
     __tablename__ = 'products'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -68,5 +86,3 @@ class Products(Base):
 
 
 Base.metadata.create_all(engine)
-
-

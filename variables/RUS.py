@@ -1,4 +1,7 @@
 class Strings:
+    """
+    Class for storing strings in russian.
+    """
     welcome = 'Добро пожаловать!'
     ask_subscribe = 'Подписаться на канал'
     check_subscribe = 'Проверить подписку'
