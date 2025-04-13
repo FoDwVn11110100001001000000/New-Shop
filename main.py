@@ -17,6 +17,8 @@ from variables.RUS import Strings as var
 from env import Config as config
 from utils.logs import log
 from database.db import UserDb
+from database.models import Base, engine
+from populate_database import init_db
 
 
 class Main:
@@ -46,6 +48,7 @@ class Main:
         self.dp.register_message_handler(self.start, commands=["start"])
         self.dp.register_callback_query_handler(self.check_subscription, text="check_subscription")
         self.dp.register_callback_query_handler(self.main_menu, text="main_menu")
+        
 
     async def start(self, message: Message, state: FSMContext) -> None:
         """
@@ -66,6 +69,7 @@ class Main:
             self.user.create_user(obj=message)
         elif user_data and await self.telegram_subs.check_member(obj=message):
             await self.main_menu(message, state)
+            return
 
         keyboard = self.keyboard.subscribe_keyboard()
         await self.send_keyboard.keyboard(obj=message, text=var.welcome, keyboard=keyboard)
@@ -87,7 +91,14 @@ class Main:
             await self.start(callback, state)
 
     async def main_menu(self, callback: CallbackQuery, state: FSMContext) -> None:
-        print("MAIN MENU***")
+        await state.finish()
+        
+        keyboard = self.keyboard.main_menu()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=var.available,
+            keyboard=keyboard
+        )
 
 
 
@@ -104,5 +115,9 @@ class Main:
 
 
 if __name__ == "__main__":
+    # Create and populate the database
+    Base.metadata.create_all(engine)
+    init_db()
+
     bot_instance = Main()
     bot_instance.run()

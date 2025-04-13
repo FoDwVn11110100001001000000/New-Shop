@@ -3,14 +3,15 @@ This module contains classes for working with the database.
 """
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, BigInteger, Text
+from pytz import timezone
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, BigInteger, Text, ForeignKey
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-import pytz
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from env import Config as config
 
 
-timezone = pytz.timezone(config.timezone)
+tz = timezone(config.timezone)
 
 engine = create_engine(config.database_url)
 Session = sessionmaker(bind=engine)
@@ -19,70 +20,45 @@ Base = declarative_base()
 
 
 class User(Base):
-    """
-    User database model.
-    """
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    telegram_id = Column(BigInteger, unique=True)
+    telegram_id = Column(BigInteger, unique=True, index=True)
     name = Column(String)
-    username = Column(String)
+    username = Column(String, index=True)
     balance = Column(Float)
     language = Column(String)
     last_visit = Column(DateTime)
     is_ban = Column(Boolean, default=False)
 
+    # Relationships
+    sell_logs = relationship("SellLog", back_populates="user")
+
 class SellLog(Base):
-    """"
-    Sell log database model.
-    """
-    __tablename__ = 'sell list'
+    __tablename__ = 'sell_log'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    time = Column(DateTime, default=datetime.now(timezone))
-    telegram_id = Column(BigInteger)
+    time = Column(DateTime, default=lambda: datetime.now(tz))
+    telegram_id = Column(BigInteger, ForeignKey('users.telegram_id'), index=True)
     name = Column(String)
     username = Column(String)
     type = Column(String)
     filename = Column(String)
     price = Column(String)
 
-class Reserve(Base):
-    """
-    Reserve database model
-    """
-    __tablename__ = 'reserve'
+    # Relationships
+    user = relationship("User", back_populates="sell_logs")
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    telegram_id = Column(BigInteger)
-    username = Column(String)
-    file_path = Column(String)
-    category = Column(String)
-    filename = Column(String, unique=True)
-    reserve_time_end = Column(DateTime)
 
-class Lots(Base):
-    """
-    Lots database model
-    """
+class Account(Base):
     __tablename__ = 'accounts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    lot_type = Column(String)
+    lot_type = Column(String, index=True)
+    lot_format = Column(String)
     txt = Column(Text, unique=True)
-    added_by = Column(String)
-
-class Products(Base):
-    """
-    Products database model
-    """
-    __tablename__ = 'products'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    lot_type = Column(String) # Header
     price = Column(Float)
-    lot_format = Column(String) # txt or logpass
+    added_by = Column(String, index=True)
 
 
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)

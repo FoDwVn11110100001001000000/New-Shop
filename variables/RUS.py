@@ -8,3 +8,8 @@ class Strings:
     not_subscribed = 'Вы не подписаны на канал'
 
     main_menu = 'Главное меню'
+    lot_list = 'Товар'
+    profile = 'Профиль'
+    support = 'Поддержка'
+
+    available = 'В наличии:'

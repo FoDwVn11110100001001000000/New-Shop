@@ -10,7 +10,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from aiogram.types import Message, CallbackQuery
 
 from utils.logs import log
-from database.models import User, SellLog, Reserve, Lots, timezone, session
+from database.models import User, SellLog, Lots, tz, session
 
 
 class Telegram:
@@ -52,7 +52,7 @@ class UserDb(Telegram):
         """
         telegram = self.telegram.data(obj)
         # Refresh last visit parameter
-        user.last_visit = datetime.now(timezone)
+        user.last_visit = datetime.now(tz)
         log.info(
             f"ID: {telegram.telegram_id} | Username: {telegram.username} "
             f"Changed username in the database. Old: {user.username}"
@@ -123,7 +123,7 @@ class UserDb(Telegram):
                 username= telegram.username,
                 balance= 0,
                 language= language,
-                last_visit= datetime.now(timezone)
+                last_visit= datetime.now(tz)
             )
             self.session.add(new_user)
             log.info(
@@ -376,7 +376,7 @@ class SelllogDb:
         with self.session:
             sell_log = SellLog(
                 telegram_id=self.telegram_id,
-                time=datetime.now(timezone),
+                time=datetime.now(tz),
                 name=self.name,
                 username=self.username,
                 type=folder_name,
@@ -403,7 +403,7 @@ class SelllogDb:
         with self.session:   
             sell_log = SellLog(
                 telegram_id=self.telegram_id,
-                time=datetime.now(timezone),
+                time=datetime.now(tz),
                 name=self.name,
                 username=self.username,
                 type=folder_name,
@@ -413,345 +413,6 @@ class SelllogDb:
             self.session.add(sell_log)
             self.session.commit()
             log.info(f'ID: {self.telegram_id}| Username: {self.username}| Added topup log to the database')
-
-
-class ReserveDb:
-    """
-    Database class for handling reservations.
-    """
-    def __init__(self, telegram_id: str, username: str) -> None:
-        self.user = User
-        self.session = session
-        self.telegram_id = telegram_id
-        self.username = username
-
-    def is_file_reserved(self, file_path: str) -> bool:
-        """
-        Checks if a file is reserved.
-        Args:
-            file_path (str): The path to the file to be checked.
-        Returns:
-            bool: True if the file is reserved, False otherwise.
-        """
-        with self.session:
-            try:
-                check_reserve = self.session.query(Reserve).filter(
-                    Reserve.file_path == file_path).count() > 0
-                return check_reserve
-
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in reserve check.| Path: {file_path}| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in reserve check.| Path: {file_path}| Exception: {e}'
-                    )
-
-    def add_reservation(
-            self,
-            file_path: str,
-            category: str,
-            filename: str,
-            reserve_time_end: datetime
-        ) -> bool:
-        """
-        Adds a reservation to the database.
-
-        Args:
-            file_path (str): The path to the file to be reserved.
-            category (str): The category of the file to be reserved.
-            filename (str): The name of the file to be reserved.
-            reserve_time_end (datetime): The time when the reservation should end.
-
-        Returns:
-            bool: True if the reservation was successfully added, False otherwise.
-        """
-        with self.session:
-            try:
-                reservation = Reserve(
-                    telegram_id=self.telegram_id,
-                    username=self.username,
-                    file_path=file_path,
-                    category=category,
-                    filename=filename,
-                    reserve_time_end=reserve_time_end
-                )
-                self.session.add(reservation)
-                self.session.commit()
-                return True
-            except IntegrityError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'There is already a reservation on this file| Exception: {e}'
-                    f'| Path: {file_path}'
-                    )
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in adding reservations.| Exception: {e}| Path: {file_path}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in adding reservations.| Exception: {e}| Path: {file_path}'
-                    )
-
-    def check_reservation(self) -> tuple[str, dict]:
-        """
-        Retrieves and summarizes the reservation data for a user.
-
-        Queries the database for reservations associated with the current user,
-        identified by their Telegram ID. If reservations are found, counts the
-        number of files reserved in each category and returns this data as a
-        formatted string and a dictionary. Logs the count and details. If no
-        reservations are found, returns zero and an empty dictionary.
-
-        Returns:
-            tuple[str, dict]: A tuple containing a formatted string summarizing
-            the reservation counts by category and a dictionary with the categories 
-            as keys and their respective counts as values.
-        """
-
-        with self.session:
-            try:
-                user_reservations = self.session.query(Reserve).filter_by(
-                    telegram_id=self.telegram_id).all()
-                if user_reservations:
-                    # Словарь для хранения количества файлов каждого типа покупки
-                    files_count_by_category = defaultdict(int)
-                    # Считаем количество каждого типа
-                    for res in user_reservations:
-                        files_count_by_category[res.category] += 1
-                    # Формируем текст с количеством файлов по типам
-                    count_info = "\n".join(
-                        [f"✔*{category}* : *{count}*" for category, count 
-                         in files_count_by_category.items()]
-                        )
-                    log.info(
-                        f'ID: {self.telegram_id}| Username: {self.username}| '
-                        f'Count: {count_info}| Files: {files_count_by_category}'
-                        )
-                    return count_info, dict(files_count_by_category)
-                else:
-                    return 0, dict()
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in checking reservation.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in checking reservation.| Exception: {e}'
-                    )
-
-    def get_file_paths_by_telegram_id(self) -> list[str]|None:
-        """
-        Retrieves a list of file paths for reservations associated with the given Telegram ID.
-
-        Returns:
-            list[str]|None: A list of file paths if reservations are found, else None.
-        """
-        with self.session:
-            try:
-                # Querying the database
-                user_reservations = self.session.query(Reserve).filter_by(
-                    telegram_id=self.telegram_id
-                    ).all()
-                # Extracting file paths
-                file_paths = [reservation.file_path for reservation in user_reservations]
-                log.info(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'File paths: {file_paths}'
-                    )
-                return file_paths
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting file paths.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting file paths.| Exception: {e}'
-                    )
-
-    def delete_reservation_by_file_path(self, file_path: str) -> bool:
-        """
-        Deletes a reservation from the database based on the provided file path.
-
-        Args:
-            file_path (str): The path to the file whose reservation should be deleted.
-
-        Returns:
-            bool: True if the reservation was successfully deleted, False otherwise.
-        """
-        with self.session:
-            try:
-                # Ищем запись в таблице Reserve по file_path
-                reservation_to_delete = self.session.query(Reserve).filter_by(
-                    file_path=file_path
-                    ).first()
-                if reservation_to_delete:
-                    # Если запись найдена, удаляем её из сессии и подтверждаем изменения
-                    self.session.delete(reservation_to_delete)
-                    self.session.commit()
-                    log.info(
-                        f'ID: {self.telegram_id}| Username: {self.username}| '
-                        f'Deleted reservation by file path: {file_path}'
-                        )
-                    return True
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in deleting reservation by file path.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in deleting reservation by file path.| Exception: {e}'
-                    )
-            return False
-
-    def delete_expired_reservations(self) -> None:
-        """
-        Deletes all expired reservations from the database.
-
-        This method queries the Reserve table for all records with a reserve_time_end
-        value less than the current time and deletes them from the session. The changes
-        are then committed to the database.
-
-        If an error occurs during the deletion process, it is logged with ERROR level.
-        """
-        with self.session:
-            try:
-                current_time = datetime.now(timezone)
-                expired_reservations = self.session.query(Reserve).filter(
-                    Reserve.reserve_time_end < current_time
-                    ).all()
-                for reservation in expired_reservations:
-                    self.session.delete(reservation)
-                self.session.commit()
-                log.info(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Deleted expired reservations'
-                    )
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in deleting expired reservations.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in deleting expired reservations.| Exception: {e}'
-                    )
-
-    def get_reserve_items_count(self)-> dict:
-        """
-        Returns a dictionary with category names as keys and their respective counts as values.
-
-        The method queries the Reserve table for all records and counts the number of records
-        for each category. The result is returned as a dictionary.
-
-        If an error occurs during the query or counting process, it is logged with ERROR level.
-        """
-        with self.session:
-            try:
-                reserve_items = self.session.query(Reserve).all()
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting reserve items count.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting reserve items count.| Exception: {e}'
-                    )
-            if not reserve_items:
-                return {}
-
-            category_counts = {}
-            for item in reserve_items:
-                category = item.category
-                if category in category_counts:
-                    category_counts[category] += 1
-                else:
-                    category_counts[category] = 1
-            log.info(
-                f'ID: {self.telegram_id}| Username: {self.username}| '
-                f'Category counts: {category_counts}'
-                )
-            return category_counts
-
-    def clear_reserve_by_telegram_id(self) -> None:
-        """
-        Deletes all reserve items associated with the user identified by the provided Telegram ID.
-        The method queries the Reserve table for all 
-        records with the provided Telegram ID and deletes them.
-        If an error occurs during the deletion process, it is logged with ERROR level.
-        """
-        with self.session:
-            try:
-                self.session.query(Reserve).filter(Reserve.telegram_id == self.telegram_id).delete()
-                self.session.commit()
-                log.info(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Deleted reserve items'
-                    )
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in clearing reserve items.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in clearing reserve items.| Exception: {e}'
-                    )
-
-    def get_users_stats(self) -> str|None:
-        """
-        Retrieves and formats user statistics, including balance and purchase history.
-
-        Retrieves the user's balance and the 20 most recent purchases.
-        Formats the retrieved data into a string and logs it with INFO level.
-        Returns the formatted string.
-        If an error occurs during the retrieval or formatting process, 
-        it is logged with ERROR level.
-        """
-        with self.session:
-            try:
-                user = self.session.query(User).filter_by(telegram_id=self.telegram_id).first()
-                purchases = self.session.query(SellLog).filter_by(
-                    telegram_id=self.telegram_id
-                    ).order_by(desc(SellLog.time)).limit(20).all()
-
-                stats_str = f"👤 User: {user.name} - {user.telegram_id}\n"
-                stats_str += f"💰 Balance: {user.balance}\n\n"
-
-                for purchase in purchases:
-                    formatted_time = purchase.time.strftime('%d-%m-%Y %H:%M:%S')
-                    stats_str += (
-                        f"⏳ Time: {formatted_time}\n✏️ Type: {purchase.type},\n📄" 
-                        f" Filename: {purchase.filename},\n💲 Price: {purchase.price}\n\n"
-                        )
-                log.info(f'ID: {self.telegram_id}| Username: {self.username}| Stats: {stats_str}')
-                return stats_str
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting users stats.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting users stats.| Exception: {e}'
-                    )
 
 
 class LotsDb:

@@ -28,6 +28,21 @@ class Keyboards:
         )
         return keyboard
 
+    def main_menu(self) -> InlineKeyboardMarkup:
+        """
+        Method for creating a keyboard with buttons to navigate to the main menu.
+
+        Returns:
+            InlineKeyboardMarkup: A keyboard with one button: the main menu.
+        """
+        keyboard = InlineKeyboardMarkup(row_width=1)
+        keyboard.add( 
+            InlineKeyboardButton(var.lot_list, callback_data='lot_list'),
+            InlineKeyboardButton(var.profile, callback_data='profile'),
+            InlineKeyboardButton(var.support, callback_data='support')
+        )
+        return keyboard
+
 
 class TelegramChannelSubscription:
     """

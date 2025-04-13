@@ -13,7 +13,7 @@ class Logger:
     Class for logging.
     """
     def __init__(self) -> None:
-        current_date = datetime.now().strftime("%d.%m.%Y")
+        current_date = datetime.now().strftime("%Y.%m.%d")
         self.path = f"logs/{current_date}.log"
         self.rotation = "1 day"
         self.retention = "1 month"
