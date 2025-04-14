@@ -12,5 +12,7 @@ class Strings:
     profile = 'Профиль'
     support = 'Поддержка'
 
-    available = 'В наличии:\n'
+    available = 'В наличии:'
     pcs = 'шт.'
+
+    category = 'Категория: '

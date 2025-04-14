@@ -101,7 +101,7 @@ class Main:
     async def main_menu(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
         
-        text = f'***{var.available}***\n'
+        text = f'***{var.available}***\n\n'
 
         account_stats = self.account.get_desription_main()
         for lot_type, price, quantity in account_stats:
@@ -117,7 +117,19 @@ class Main:
     @exception_handler
     async def lot_list(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
-        print('lot')
+
+        text = f'***{var.category}***\n\n'
+
+        account_stats = self.account.get_desription_main()
+        for lot_type, price, quantity in account_stats:
+            text += f"*{lot_type}* /// $*{price}* /// *{quantity}**{var.pcs}*\n"
+
+        keyboard = self.keyboard.lot_menu()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=text,
+            keyboard=keyboard
+        )
 
     @exception_handler
     async def profile(self, callback: CallbackQuery, state: FSMContext) -> None:
@@ -134,7 +146,7 @@ class Main:
 
     @exception_handler
     def run(self):
-        log.info("Bot started")
+        log.info("***Bot started***")
         executor.start_polling(self.dp, skip_updates=True)
 
 

@@ -43,6 +43,12 @@ class Keyboards:
         )
         return keyboard
 
+    def lot_menu(self, buttons_list: list[str]) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup(row_width=1)
+        for button in buttons_list:
+            keyboard.add(
+                InlineKeyboardButton(button, callback_data=f'buy_{button}'))
+        return keyboard
 
 class TelegramChannelSubscription:
     """
