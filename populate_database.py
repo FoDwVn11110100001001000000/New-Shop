@@ -1,7 +1,6 @@
 from faker import Faker
 import random
-from datetime import datetime, timedelta
-from database.models import User, SellLog, Account, Products, session
+from database.models import User, SellLog, Account, session
 
 fake = Faker()
 
@@ -40,9 +39,9 @@ def populate_db():
     for _ in range(20):
         account = Account(
             lot_type=random.choice(['type1', 'type2', 'type3']),
-            lot_format=random.choice(['txt', 'logpass']),
+            lot_format=random.choice(['txt', 'logpass', 'txt']),
             txt=fake.unique.text(max_nb_chars=100),
-            price=round(random.uniform(10, 100), 2),
+            price=random.choice([1, 2]),
             added_by=fake.user_name()
         )
         session.add(account)

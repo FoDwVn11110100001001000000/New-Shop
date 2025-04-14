@@ -1,0 +1,9 @@
+2025-04-14 13:46:02.494 | INFO     | __main__:run:117 - Bot started
+2025-04-14 13:47:54.572 | INFO     | database.db:refresh_user:56 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-14 13:47:54.574 | INFO     | database.db:get_user:96 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-14 13:50:27.937 | INFO     | __main__:run:117 - Bot started
+2025-04-14 13:52:05.664 | INFO     | database.db:get_user:103 - ID: 617425053| Username: FoDwVn11110100001001000000| User not found
+2025-04-14 13:52:05.672 | INFO     | database.db:create_user:129 - ID: 617425053| Username: FoDwVn11110100001001000000| Added to the database
+2025-04-14 13:52:12.919 | INFO     | database.db:refresh_user:56 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-14 13:52:12.922 | INFO     | database.db:get_user:96 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-14 14:03:01.444 | INFO     | __main__:run:117 - Bot started

@@ -19,6 +19,7 @@ from utils.logs import log
 from database.db import UserDb
 from database.models import Base, engine
 from populate_database import init_db
+from utils.decorators import exception_handler
 
 
 class Main:
@@ -49,7 +50,7 @@ class Main:
         self.dp.register_callback_query_handler(self.check_subscription, text="check_subscription")
         self.dp.register_callback_query_handler(self.main_menu, text="main_menu")
         
-
+    @exception_handler
     async def start(self, message: Message, state: FSMContext) -> None:
         """
         Handles the /start command for the Telegram bot. Finishes the current state,
@@ -74,6 +75,7 @@ class Main:
         keyboard = self.keyboard.subscribe_keyboard()
         await self.send_keyboard.keyboard(obj=message, text=var.welcome, keyboard=keyboard)
 
+    @exception_handler
     async def check_subscription(self, callback: CallbackQuery, state: FSMContext) -> None:
         """
         Handles the callback query for the 'check_subscription' button.
@@ -90,6 +92,7 @@ class Main:
             await self.telegram_subs.alert_subscription(obj=callback)
             await self.start(callback, state)
 
+    @exception_handler
     async def main_menu(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
         
@@ -109,6 +112,7 @@ class Main:
 
 
 
+    @exception_handler
     def run(self):
         log.info("Bot started")
         executor.start_polling(self.dp, skip_updates=True)

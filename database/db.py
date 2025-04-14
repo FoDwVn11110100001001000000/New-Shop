@@ -3,14 +3,11 @@ This module contains classes for working with the database.
 """
 
 from datetime import datetime
-from collections import defaultdict
-
-from sqlalchemy import func, desc
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy import func
+from sqlalchemy.exc import SQLAlchemyError
 from aiogram.types import Message, CallbackQuery
-
 from utils.logs import log
-from database.models import User, SellLog, Lots, tz, session
+from database.models import User, SellLog, Account,tz, session
 
 
 class Telegram:
@@ -415,37 +412,29 @@ class SelllogDb:
             log.info(f'ID: {self.telegram_id}| Username: {self.username}| Added topup log to the database')
 
 
-class LotsDb:
+class AccountDb:
     """
-    Class for working with lots in the database.
+    Database class for handling accounts.
     """
-    def __init__(self, telegram_id: str, username: str) -> None:
+    def __init__(self, telegram_id: str, username: str, name: str) -> None:
+        self.user = User
         self.session = session
         self.telegram_id = telegram_id
         self.username = username
+        self.name = name
 
-    def get_all_lots(self) -> list:
-        """
-        Retrieves all lots from the database.
-
-        Queries the database for all lots and returns them as a list of Lots objects.
-        If an error occurs during the retrieval process, it is logged with ERROR level.
-
-        Returns:
-            list: A list of Lots objects.
-        """
+    def get_desription_main(self) -> str:
         with self.session:
-            try:
-                lots = self.session.query(Lots).all()
-                log.info(f'ID: {self.telegram_id}| Username: {self.username}| Getting all lots')
-                return lots
-            except SQLAlchemyError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting all lots.| Exception: {e}'
-                    )
-            except AttributeError as e:
-                log.error(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Error in getting all lots.| Exception: {e}'
-                    )
+            results = (
+                session.query(
+                    Account.lot_type,
+                    Account.price,
+                    func.count(Account.id).label("quantity")
+                )
+                .group_by(Account.lot_type, Account.price)
+                .order_by(Account.lot_type)
+                .all()
+            )
+
+        for lot_type, price, quantity in results:
+            print(f"Тип лота: {lot_type} /// Цена: {price} /// Кол-во: {quantity}")
