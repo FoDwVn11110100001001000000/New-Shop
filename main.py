@@ -16,10 +16,11 @@ from keyboard.keyboard_sender import KeyboardSender
 from variables.RUS import Strings as var
 from env import Config as config
 from utils.logs import log
-from database.db import UserDb
+from database.db import UserDb, AccountDb
 from database.models import Base, engine
 from populate_database import init_db
 from utils.decorators import exception_handler
+from utils.cache import RedisManager
 
 
 class Main:
@@ -39,6 +40,7 @@ class Main:
         self.send_keyboard = KeyboardSender(bot=self.bot)
         self.user = UserDb()
         self.telegram_subs = TelegramChannelSubscription(bot=self.bot)
+        self.account = AccountDb()
 
         self.register_handlers()
 
@@ -49,6 +51,9 @@ class Main:
         self.dp.register_message_handler(self.start, commands=["start"])
         self.dp.register_callback_query_handler(self.check_subscription, text="check_subscription")
         self.dp.register_callback_query_handler(self.main_menu, text="main_menu")
+        self.dp.register_callback_query_handler(self.lot_list, text="lot_list")
+        self.dp.register_callback_query_handler(self.profile, text="profile")
+        self.dp.register_callback_query_handler(self.support, text="support")
         
     @exception_handler
     async def start(self, message: Message, state: FSMContext) -> None:
@@ -96,18 +101,33 @@ class Main:
     async def main_menu(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
         
+        text = f'***{var.available}***\n'
+
+        account_stats = self.account.get_desription_main()
+        for lot_type, price, quantity in account_stats:
+            text += f"*{lot_type}* /// $*{price}* /// *{quantity}**{var.pcs}*\n"
+
         keyboard = self.keyboard.main_menu()
         await self.send_keyboard.keyboard(
             obj=callback,
-            text=var.available,
+            text=text,
             keyboard=keyboard
         )
 
+    @exception_handler
+    async def lot_list(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+        print('lot')
 
+    @exception_handler
+    async def profile(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+        print('profile')
 
-
-
-
+    @exception_handler
+    async def support(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+        print('support')
 
 
 

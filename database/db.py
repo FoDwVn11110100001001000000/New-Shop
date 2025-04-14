@@ -412,18 +412,23 @@ class SelllogDb:
             log.info(f'ID: {self.telegram_id}| Username: {self.username}| Added topup log to the database')
 
 
-class AccountDb:
+class AccountDb(Telegram):
     """
     Database class for handling accounts.
     """
-    def __init__(self, telegram_id: str, username: str, name: str) -> None:
+    def __init__(self) -> None:
         self.user = User
         self.session = session
-        self.telegram_id = telegram_id
-        self.username = username
-        self.name = name
+        self.telegram = Telegram()
 
-    def get_desription_main(self) -> str:
+    def get_desription_main(self) -> list[tuple[str, float, int]]:
+        """
+        Gets a description of the main menu.
+
+        Returns:
+            list[tuple[str, float, int]]: A list of tuples containing the type of the lot,
+                its price and the quantity of such lots.
+        """
         with self.session:
             results = (
                 session.query(
@@ -435,6 +440,4 @@ class AccountDb:
                 .order_by(Account.lot_type)
                 .all()
             )
-
-        for lot_type, price, quantity in results:
-            print(f"Тип лота: {lot_type} /// Цена: {price} /// Кол-во: {quantity}")
+        return results

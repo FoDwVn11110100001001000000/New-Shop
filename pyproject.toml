@@ -15,6 +15,7 @@ psycopg2-binary = "^2.9.10"
 loguru = "^0.7.2"
 aiogram = "2.25.1"
 faker = "^37.1.0"
+redis = "^5.2.1"
 
 
 [build-system]

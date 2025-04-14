@@ -1,16 +1,11 @@
-from sqlalchemy import func
-from database.models import Account, session
+import redis
 
-results = (
-    session.query(
-        Account.lot_type,
-        Account.price,
-        func.count(Account.id).label("quantity")
-    )
-    .group_by(Account.lot_type, Account.price)
-    .order_by(Account.lot_type)
-    .all()
-)
+# Подключение к Redis (используй "redis" как хост в Docker, если код работает внутри контейнера)
+redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
-for lot_type, price, quantity in results:
-    print(f"Тип лота: {lot_type} /// Цена: {price} /// Кол-во: {quantity}")
+# Пример: сохранить значение
+redis_client.set('my_key', 'Hello Redis!')
+
+# Пример: получить значение
+value = redis_client.get('my_key')
+print(f'Значение: {value}')

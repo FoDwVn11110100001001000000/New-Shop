@@ -19,3 +19,5 @@ class Config:
     channel_id = os.environ.get('CHANNEL_ID')
     admins = os.environ.get('ADMINS')
     workers = os.environ.get('WORKERS')
+    redis_host = os.environ('REDIS_HOST')
+    redis_port = os.environ('REDIS_PORT')
