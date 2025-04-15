@@ -54,6 +54,10 @@ class Main:
         self.dp.register_callback_query_handler(self.lot_list, text="lot_list")
         self.dp.register_callback_query_handler(self.profile, text="profile")
         self.dp.register_callback_query_handler(self.support, text="support")
+        self.dp.register_callback_query_handler(
+            self.lot_prebuy_menu,
+            lambda callback_query: callback_query.data.startswith("buy_")
+            )
         
     @exception_handler
     async def start(self, message: Message, state: FSMContext) -> None:
@@ -118,16 +122,34 @@ class Main:
     async def lot_list(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
 
-        text = f'***{var.category}***\n\n'
+        desc = [var.category]
 
-        account_stats = self.account.get_desription_main()
-        for lot_type, price, quantity in account_stats:
-            text += f"*{lot_type}* /// $*{price}* /// *{quantity}**{var.pcs}*\n"
+        buttons = list()
+        lot_type = self.account.get_lot_type()
 
-        keyboard = self.keyboard.lot_menu()
+        for lot_type in lot_type:
+            buttons.append(lot_type)
+
+        keyboard = self.keyboard.lot_menu(buttons)
         await self.send_keyboard.keyboard(
             obj=callback,
-            text=text,
+            text=desc,
+            keyboard=keyboard
+        )
+    
+    @exception_handler
+    async def lot_prebuy_menu(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+
+        lot_type = callback.data.split('_')[-1]
+        data = self.account.get_lot_details(lot_type=lot_type)
+
+        desc = f'{lot_type}\n{var.price}{data[1]}\n{var.available}{data[2]}\n\n{var.lot_buy_desc}'
+
+        keyboard = self.keyboard.lot_prebuy_menu()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=desc,
             keyboard=keyboard
         )
 

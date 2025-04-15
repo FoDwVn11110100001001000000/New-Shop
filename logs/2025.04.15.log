@@ -1,0 +1,60 @@
+2025-04-15 16:01:57.610 | INFO     | __main__:run:149 - ***Bot started***
+2025-04-15 16:04:01.100 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:04:01.111 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:04:04.209 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:04:04.212 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:08:24.264 | INFO     | __main__:run:150 - ***Bot started***
+2025-04-15 16:09:02.099 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:09:02.106 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:11:57.522 | INFO     | __main__:run:151 - ***Bot started***
+2025-04-15 16:12:44.911 | INFO     | __main__:run:151 - ***Bot started***
+2025-04-15 16:12:48.662 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:12:48.663 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:20:32.827 | INFO     | __main__:run:153 - ***Bot started***
+2025-04-15 16:20:38.233 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:20:38.239 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:22:06.828 | INFO     | __main__:run:153 - ***Bot started***
+2025-04-15 16:25:12.473 | INFO     | __main__:run:153 - ***Bot started***
+2025-04-15 16:25:34.876 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:25:34.890 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:25:41.104 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:25:41.106 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:26:30.519 | INFO     | __main__:run:153 - ***Bot started***
+2025-04-15 16:26:35.212 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:26:35.213 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:27:07.363 | INFO     | __main__:run:153 - ***Bot started***
+2025-04-15 16:27:15.091 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:27:15.092 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 16:28:19.457 | INFO     | __main__:run:153 - ***Bot started***
+2025-04-15 16:28:24.346 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 16:28:24.347 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 18:07:43.943 | INFO     | __main__:run:153 - ***Bot started***
+2025-04-15 18:08:06.096 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 18:08:06.100 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 18:11:42.771 | INFO     | __main__:run:151 - ***Bot started***
+2025-04-15 18:13:48.398 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 18:13:48.402 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 18:29:43.596 | INFO     | __main__:run:151 - ***Bot started***
+2025-04-15 18:29:48.204 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 18:29:48.205 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:34:48.452 | INFO     | __main__:run:173 - ***Bot started***
+2025-04-15 19:34:53.597 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:34:53.606 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:36:16.560 | INFO     | __main__:run:173 - ***Bot started***
+2025-04-15 19:36:19.141 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:36:19.142 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:37:29.372 | INFO     | __main__:run:173 - ***Bot started***
+2025-04-15 19:37:31.603 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:37:31.603 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:39:38.507 | INFO     | __main__:run:173 - ***Bot started***
+2025-04-15 19:39:41.380 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:39:41.381 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:39:55.946 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:39:55.949 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:46:12.599 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:46:12.618 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:48:10.831 | INFO     | __main__:run:171 - ***Bot started***
+2025-04-15 19:48:14.672 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:48:14.674 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-15 19:49:30.847 | INFO     | database.db:refresh_user:53 - ID: 519300999 | Username: anastasiiafesenko Changed username in the database. Old: anastasiiafesenko
+2025-04-15 19:49:30.919 | INFO     | database.db:get_user:93 - ID: 519300999| Username: anastasiiafesenko| Data: {'name': 'Anastasiia', 'username': 'anastasiiafesenko', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database

@@ -441,3 +441,49 @@ class AccountDb(Telegram):
                 .all()
             )
         return results
+
+    def get_lot_type(self) -> list[tuple[str]]:
+        """
+        Gets a description of the main menu.
+
+        Returns:
+            list[tuple[str, float, int]]: A list of tuples containing the type of the lot,
+                its price and the quantity of such lots.
+        """
+        with self.session:
+            results = (
+                self.session.query(Account.lot_type)
+                .distinct()
+                .order_by(Account.lot_type)
+                .all()
+            )
+            return [row[0] for row in results]
+        
+    def get_lot_info(self, lot_type: str) -> list[tuple[float, int]]:
+        with session:
+            results = (
+                session.query(
+                    Account.price,
+                    func.count(Account.id).label("quantity")
+                )
+                .filter(Account.lot_type == lot_type)
+                .group_by(Account.price)
+                .order_by(Account.price)
+                .all()
+            )
+        return results
+
+    def get_lot_details(self, lot_type: str) -> tuple[str, float, int]:
+        with session:
+            result = (
+                session.query(
+                    Account.lot_type,
+                    Account.price,
+                    func.count(Account.id).label("quantity")
+                )
+                .filter(Account.lot_type == lot_type)
+                .group_by(Account.lot_type, Account.price)
+                .order_by(Account.price)
+                .first()
+            )
+        return result
