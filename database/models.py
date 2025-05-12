@@ -23,9 +23,9 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    telegram_id = Column(BigInteger, unique=True, index=True)
+    telegram_id = Column(BigInteger, unique=True)
     name = Column(String)
-    username = Column(String, index=True)
+    username = Column(String)
     balance = Column(Float)
     language = Column(String)
     last_visit = Column(DateTime)
@@ -39,7 +39,7 @@ class SellLog(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     time = Column(DateTime, default=lambda: datetime.now(tz))
-    telegram_id = Column(BigInteger, ForeignKey('users.telegram_id'), index=True)
+    telegram_id = Column(BigInteger, ForeignKey('users.telegram_id'))
     name = Column(String)
     username = Column(String)
     type = Column(String)
@@ -54,11 +54,12 @@ class Account(Base):
     __tablename__ = 'accounts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    lot_type = Column(String, index=True)
+    lot_type = Column(String)
     lot_format = Column(String)
+    filename = Column(String, unique=True)
     txt = Column(Text, unique=True)
     price = Column(Float)
-    added_by = Column(String, index=True)
+    added_by = Column(String)
 
 
 # Base.metadata.create_all(engine)

@@ -16,11 +16,12 @@ from keyboard.keyboard_sender import KeyboardSender
 from variables.RUS import Strings as var
 from env import Config as config
 from utils.logs import log
-from database.db import UserDb, AccountDb
+from database.db import UserDb, AccountDb, Telegram
 from database.models import Base, engine
 from populate_database import init_db
 from utils.decorators import exception_handler
 from utils.cache import RedisManager
+from utils.states import StateManager, StateList
 
 
 class Main:
@@ -41,6 +42,8 @@ class Main:
         self.user = UserDb()
         self.telegram_subs = TelegramChannelSubscription(bot=self.bot)
         self.account = AccountDb()
+        self.redis = RedisManager()
+        self.telegram = Telegram()
 
         self.register_handlers()
 
@@ -58,6 +61,8 @@ class Main:
             self.lot_prebuy_menu,
             lambda callback_query: callback_query.data.startswith("buy_")
             )
+        self.dp.register_message_handler(self.handle_lot_input, state=StateList.LOT_MENU)
+        self.dp.register_callback_query_handler(self.purchase, text="purchase", state=StateList.LOT_MENU)
         
     @exception_handler
     async def start(self, message: Message, state: FSMContext) -> None:
@@ -73,6 +78,9 @@ class Main:
             state (FSMContext): The FSM context for maintaining the state of the bot.
         """
         await state.finish()
+        
+        # Init Redis
+        await self.redis.connect()
 
         user_data = self.user.get_user(obj=message)
         if not user_data:
@@ -108,6 +116,9 @@ class Main:
         text = f'***{var.available}***\n\n'
 
         account_stats = self.account.get_desription_main()
+        print(f'***acc stats***{account_stats}')
+        telegram_id = self.telegram.data(obj=callback).telegram_id
+
         for lot_type, price, quantity in account_stats:
             text += f"*{lot_type}* /// $*{price}* /// *{quantity}**{var.pcs}*\n"
 
@@ -146,12 +157,91 @@ class Main:
 
         desc = f'{lot_type}\n{var.price}{data[1]}\n{var.available}{data[2]}\n\n{var.lot_buy_desc}'
 
-        keyboard = self.keyboard.lot_prebuy_menu()
+        keyboard = self.keyboard.one_button()
         await self.send_keyboard.keyboard(
             obj=callback,
             text=desc,
             keyboard=keyboard
         )
+        manager = StateManager(state)
+        await manager.set_state(StateList.LOT_MENU)
+        await manager.set_data(key="lot_type", value=lot_type)
+        await manager.set_data(key="available_quantity", value=data[2])
+
+    @exception_handler
+    async def handle_lot_input(self, message: Message, state: FSMContext):
+        try:
+            lot_quantity = int(message.text.strip())
+        except ValueError:
+            await message.answer(var.input_exception)
+            await self.main_menu(message, state)
+            return
+
+        if lot_quantity > 20 or lot_quantity < 0:    
+            await message.answer(var.input_quantity_exception)
+            await self.main_menu(message, state)
+            return
+
+        manager = StateManager(state)
+        lot_data = await manager.get_all_data()
+        lot_type = lot_data.get("lot_type")
+        lots = self.account.get_lot_texts_by_type(lot_type=lot_type, quantity=lot_quantity)
+
+        telegram_id = self.telegram.data(obj=message).telegram_id
+        await self.redis.reserve_lots(telegram_id=telegram_id, lots=lots)
+
+        available_quantity = int(lot_data.get("available_quantity"))
+        if available_quantity < lot_quantity:
+            await message.answer(var.input_quantity_available)
+            await self.main_menu(message, state)
+            return
+        
+        lot_info = self.account.get_lot_details(lot_type)
+        await manager.set_data(key="lot_quantity", value=lot_quantity)
+        total_price = float(lot_info[1]) * lot_quantity
+        await manager.set_data(key="lot_total_price", value=total_price)
+
+        balance = self.user.get_balance()
+        if balance < total_price:
+            await message.answer(var.input_balance_exception)
+            await self.main_menu(message, state)
+            return
+
+        desc = (
+            f"{var.lot_list}: {lot_data.get('lot_type')}\n"
+            f"{var.price}{lot_info[1]}\n"
+            f"{var.quantity}{lot_quantity}\n"
+            f"{var.total}{total_price}\n"
+            f"{var.acc_balance}{balance}"
+        )
+
+        keyboard = self.keyboard.buy_menu()
+        await self.send_keyboard.keyboard(
+            obj=message,
+            text=desc,
+            keyboard=keyboard
+        )   
+
+    @exception_handler
+    async def purchase(self, callback: CallbackQuery, state: FSMContext) -> None:
+        manager = StateManager(state)
+        lot_data = await manager.get_all_data()
+        print(f'***{lot_data}***')
+
+        desc = (
+            f'{var.lot_list}: {lot_data.get("lot_type")}\n'
+            f'{var.price}{lot_data.get("lot_total_price")} USDT\n'
+            f'{var.quantity}{lot_data.get("lot_quantity")}\n'
+        )
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=desc,
+            keyboard=keyboard
+        )
+
+
 
     @exception_handler
     async def profile(self, callback: CallbackQuery, state: FSMContext) -> None:

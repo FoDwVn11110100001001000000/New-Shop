@@ -1,0 +1,28 @@
+2025-05-06 00:03:40.003 | INFO     | utils.cache:__init__:24 - ✅ Success connection to Redis
+2025-05-06 00:03:40.014 | INFO     | __main__:run:197 - ***Bot started***
+2025-05-06 00:03:51.814 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-05-06 00:03:51.820 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-05-06 00:25:39.526 | INFO     | utils.cache:__init__:24 - ✅ Success connection to Redis
+2025-05-06 00:25:39.535 | INFO     | __main__:run:197 - ***Bot started***
+2025-05-06 00:25:43.042 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-05-06 00:25:43.042 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-05-06 00:29:01.631 | INFO     | utils.cache:__init__:24 - ✅ Success connection to Redis
+2025-05-06 00:29:01.634 | INFO     | __main__:run:197 - ***Bot started***
+2025-05-06 00:29:07.275 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-05-06 00:29:07.276 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-05-06 00:43:56.246 | INFO     | utils.cache:__init__:24 - ✅ Success connection to Redis
+2025-05-06 00:43:56.253 | INFO     | __main__:run:198 - ***Bot started***
+2025-05-06 00:43:59.092 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-05-06 00:43:59.092 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-05-06 00:45:06.947 | INFO     | utils.cache:__init__:24 - ✅ Success connection to Redis
+2025-05-06 00:45:06.950 | INFO     | __main__:run:198 - ***Bot started***
+2025-05-06 00:45:09.287 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-05-06 00:45:09.288 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-05-06 00:53:06.091 | INFO     | utils.cache:__init__:24 - ✅ Success connection to Redis
+2025-05-06 00:53:06.095 | INFO     | __main__:run:202 - ***Bot started***
+2025-05-06 00:53:35.732 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-05-06 00:53:35.732 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-05-06 00:55:44.833 | INFO     | utils.cache:__init__:24 - ✅ Success connection to Redis
+2025-05-06 00:55:44.836 | INFO     | __main__:run:202 - ***Bot started***
+2025-05-06 00:55:49.252 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-05-06 00:55:49.252 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database

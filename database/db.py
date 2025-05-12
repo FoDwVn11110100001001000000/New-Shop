@@ -164,13 +164,13 @@ class UserDb(Telegram):
             str|None: User's balance if found, else None
         """
         with self.session:
-            user = self.session.query(User).filter_by(telegram_id=self.telegram_id).first()
+            user = self.session.query(User).filter_by(telegram_id=self.telegram.telegram_id).first()
             if user:
                 balance = user.balance
-                log.info(f'ID: {self.telegram_id}| Username: {self.username}| Balance: {balance}')
+                log.info(f'ID: {self.telegram.telegram_id}| Username: {self.telegram.username}| Balance: {balance}')
                 return balance
             else:
-                log.error(f'ID: {self.telegram_id}| Username: {self.username}| User not found')
+                log.error(f'ID: {elf.telegram.telegram_id}| Username: {self.telegram.username}| User not found')
 
     def change_user_language(self, new_language: str) -> bool:
         """
@@ -487,3 +487,25 @@ class AccountDb(Telegram):
                 .first()
             )
         return result
+
+    def get_lots_by_type(self, lot_type: str, quantity: int) -> list[Account]:
+        with session:
+            result = (
+                session.query(Account)
+                .filter(Account.lot_type == lot_type)
+                .order_by(Account.price)
+                .limit(quantity)
+                .all()
+            )
+        return result
+
+    def get_lot_texts_by_type(self, lot_type: str, quantity: int) -> list[dict[str, str]]:
+        with session:
+            lots = (
+                session.query(Account)
+                .filter(Account.lot_type == lot_type)
+                .order_by(Account.price)
+                .limit(quantity)
+                .all()
+            )
+            return [{lot.lot_type: lot.txt} for lot in lots]

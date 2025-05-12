@@ -1,0 +1,98 @@
+2025-04-19 22:39:30.625 | INFO     | __main__:run:171 - ***Bot started***
+2025-04-19 22:47:11.266 | INFO     | __main__:run:171 - ***Bot started***
+2025-04-19 22:47:14.475 | INFO     | database.db:get_user:100 - ID: 617425053| Username: FoDwVn11110100001001000000| User not found
+2025-04-19 22:47:14.477 | INFO     | database.db:create_user:126 - ID: 617425053| Username: FoDwVn11110100001001000000| Added to the database
+2025-04-19 22:47:20.353 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 22:47:20.357 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-19 22:59:12.599 | INFO     | __main__:run:171 - ***Bot started***
+2025-04-19 22:59:14.314 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 22:59:14.315 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-19 22:59:20.281 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 22:59:20.284 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-19 23:40:00.823 | INFO     | __main__:run:196 - ***Bot started***
+2025-04-19 23:40:14.790 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 23:40:14.791 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-19 23:40:23.528 | ERROR    | utils.decorators:wrapper:10 - 💥 Error in func 'handle_lot_input': TypeError — Main.handle_lot_input() got multiple values for argument 'state'
+Traceback (most recent call last):
+
+  File "/Users/anastasia/Desktop/projects/New-Shop/main.py", line 206, in <module>
+    bot_instance.run()
+    │            └ <function Main.run at 0x105654c20>
+    └ <__main__.Main object at 0x103a56a90>
+
+  File "/Users/anastasia/Desktop/projects/New-Shop/utils/decorators.py", line 8, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {}
+           │     └ (<__main__.Main object at 0x103a56a90>,)
+           └ <function Main.run at 0x105654b80>
+
+  File "/Users/anastasia/Desktop/projects/New-Shop/main.py", line 197, in run
+    executor.start_polling(self.dp, skip_updates=True)
+    │        │             │    └ <aiogram.dispatcher.dispatcher.Dispatcher object at 0x10568ac50>
+    │        │             └ <__main__.Main object at 0x103a56a90>
+    │        └ <function start_polling at 0x1038f4cc0>
+    └ <module 'aiogram.utils.executor' from '/Users/anastasia/Library/Caches/pypoetry/virtualenvs/shop-bot-qQp50m8h-py3.11/lib/pyth...
+
+  File "/Users/anastasia/Library/Caches/pypoetry/virtualenvs/shop-bot-qQp50m8h-py3.11/lib/python3.11/site-packages/aiogram/utils/executor.py", line 45, in start_polling
+    executor.start_polling(
+    │        └ <function Executor.start_polling at 0x103918220>
+    └ <aiogram.utils.executor.Executor object at 0x10564fd50>
+  File "/Users/anastasia/Library/Caches/pypoetry/virtualenvs/shop-bot-qQp50m8h-py3.11/lib/python3.11/site-packages/aiogram/utils/executor.py", line 323, in start_polling
+    loop.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x102203ec0>
+    └ <_UnixSelectorEventLoop running=True closed=False debug=False>
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 607, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x102205d00>
+    └ <_UnixSelectorEventLoop running=True closed=False debug=False>
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 1922, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x101c4ba60>
+    └ <Handle <TaskStepMethWrapper object at 0x105648460>()>
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <TaskStepMethWrapper object at 0x105648460>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <TaskStepMethWrapper object at 0x105648460>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <TaskStepMethWrapper object at 0x105648460>()>
+  File "/Users/anastasia/Library/Caches/pypoetry/virtualenvs/shop-bot-qQp50m8h-py3.11/lib/python3.11/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+                     │           │        │       └ {}
+                     │           │        └ (<Update {"update_id": 903703599, "message": {"message_id": 526, "from": {"id": 617425053, "is_bot": false, "first_name": "DF...
+                     │           └ <bound method Dispatcher.process_update of <aiogram.dispatcher.dispatcher.Dispatcher object at 0x10568ac50>>
+                     └ Handler.HandlerObj(handler=<bound method Dispatcher.process_update of <aiogram.dispatcher.dispatcher.Dispatcher object at 0x1...
+  File "/Users/anastasia/Library/Caches/pypoetry/virtualenvs/shop-bot-qQp50m8h-py3.11/lib/python3.11/site-packages/aiogram/dispatcher/dispatcher.py", line 256, in process_update
+    return await self.message_handlers.notify(update.message)
+                 │    │                │      │      └ <aiogram.types.fields.Field object at 0x1037a5010>
+                 │    │                │      └ <Update {"update_id": 903703599, "message": {"message_id": 526, "from": {"id": 617425053, "is_bot": false, "first_name": "DFe...
+                 │    │                └ <function Handler.notify at 0x10381ba60>
+                 │    └ <aiogram.dispatcher.handler.Handler object at 0x104b34550>
+                 └ <aiogram.dispatcher.dispatcher.Dispatcher object at 0x10568ac50>
+  File "/Users/anastasia/Library/Caches/pypoetry/virtualenvs/shop-bot-qQp50m8h-py3.11/lib/python3.11/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+                     │           │        │       └ {'state': <aiogram.dispatcher.storage.FSMContext object at 0x1056e17d0>}
+                     │           │        └ (<Message {"message_id": 526, "from": {"id": 617425053, "is_bot": false, "first_name": "DFes", "username": "FoDwVn11110100001...
+                     │           └ <bound method Main.handle_lot_input of <__main__.Main object at 0x103a56a90>>
+                     └ Handler.HandlerObj(handler=<bound method Main.handle_lot_input of <__main__.Main object at 0x103a56a90>>, spec=FullArgSpec(ar...
+
+> File "/Users/anastasia/Desktop/projects/New-Shop/utils/decorators.py", line 8, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'state': <aiogram.dispatcher.storage.FSMContext object at 0x1056e17d0>}
+           │     └ (<__main__.Main object at 0x103a56a90>, <Message {"message_id": 526, "from": {"id": 617425053, "is_bot": false, "first_name":...
+           └ <function Main.handle_lot_input at 0x1056547c0>
+
+TypeError: Main.handle_lot_input() got multiple values for argument 'state'
+2025-04-19 23:46:00.405 | INFO     | __main__:run:196 - ***Bot started***
+2025-04-19 23:46:04.415 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 23:46:04.416 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-19 23:49:37.056 | INFO     | __main__:run:193 - ***Bot started***
+2025-04-19 23:49:46.105 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 23:49:46.106 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-19 23:51:57.856 | INFO     | __main__:run:196 - ***Bot started***
+2025-04-19 23:51:59.666 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 23:51:59.667 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-04-19 23:53:48.483 | INFO     | __main__:run:194 - ***Bot started***
+2025-04-19 23:53:49.744 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-04-19 23:53:49.744 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database

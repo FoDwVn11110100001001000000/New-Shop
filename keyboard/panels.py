@@ -101,9 +101,17 @@ class Keyboards:
                 InlineKeyboardButton(button, callback_data=f'buy_{button}'))
         return keyboard
 
-    def lot_prebuy_menu(self) -> InlineKeyboardMarkup:
+    def one_button(self) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup(row_width=1)
         keyboard.add( 
+            InlineKeyboardButton(var.main_menu, callback_data='main_menu')
+        )
+        return keyboard
+
+    def buy_menu(self) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup(row_width=1)
+        keyboard.add(
+            InlineKeyboardButton(var.purchase, callback_data='purchase'),
             InlineKeyboardButton(var.main_menu, callback_data='main_menu')
         )
         return keyboard

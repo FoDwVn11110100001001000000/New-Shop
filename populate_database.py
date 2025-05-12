@@ -40,6 +40,7 @@ def populate_db():
         account = Account(
             lot_type=random.choice(['type1', 'type2', 'type3']),
             lot_format=random.choice(['txt', 'logpass', 'txt']),
+            filename = f"{fake.unique.slug()[:8]}.txt",
             txt=fake.unique.text(max_nb_chars=100),
             price=random.choice([1, 2]),
             added_by=fake.user_name()
