@@ -1,3 +1,0 @@
-2025-04-12 00:59:56.263 | INFO     | __main__:run:102 - Bot started
-2025-04-12 01:00:19.562 | INFO     | database.db:get_user:103 - ID: 617425053| Username: FoDwVn11110100001001000000| User not found
-2025-04-12 01:00:19.569 | INFO     | database.db:create_user:129 - ID: 617425053| Username: FoDwVn11110100001001000000| Added to the database

@@ -167,10 +167,16 @@ class UserDb(Telegram):
             user = self.session.query(User).filter_by(telegram_id=self.telegram.telegram_id).first()
             if user:
                 balance = user.balance
-                log.info(f'ID: {self.telegram.telegram_id}| Username: {self.telegram.username}| Balance: {balance}')
+                log.info(
+                    f'ID: {self.telegram.telegram_id}| '
+                    f'Username: {self.telegram.username}| Balance: {balance}'
+                )
                 return balance
             else:
-                log.error(f'ID: {elf.telegram.telegram_id}| Username: {self.telegram.username}| User not found')
+                log.error(
+                    f'ID: {self.telegram.telegram_id}| '
+                    f'Username: {self.telegram.username}| User not found'
+                )
 
     def change_user_language(self, new_language: str) -> bool:
         """
@@ -397,7 +403,7 @@ class SelllogDb:
             price (float): The price of the topup.
         """
 
-        with self.session:   
+        with self.session:
             sell_log = SellLog(
                 telegram_id=self.telegram_id,
                 time=datetime.now(tz),
@@ -409,7 +415,10 @@ class SelllogDb:
             )
             self.session.add(sell_log)
             self.session.commit()
-            log.info(f'ID: {self.telegram_id}| Username: {self.username}| Added topup log to the database')
+            log.info(
+                f'ID: {self.telegram_id}| '
+                f'Username: {self.username}| Added topup log to the database'
+            )
 
 
 class AccountDb(Telegram):
@@ -458,8 +467,18 @@ class AccountDb(Telegram):
                 .all()
             )
             return [row[0] for row in results]
-        
+
     def get_lot_info(self, lot_type: str) -> list[tuple[float, int]]:
+        """
+        Retrieves price and quantity information for a specific lot type.
+
+        Args:
+            lot_type (str): The type of the lot for which information is to be retrieved.
+
+        Returns:
+            list[tuple[float, int]]: A list of tuples where each tuple contains the price
+            of the lot and the quantity available at that price.
+        """
         with session:
             results = (
                 session.query(
@@ -473,7 +492,17 @@ class AccountDb(Telegram):
             )
         return results
 
-    def get_lot_details(self, lot_type: str) -> tuple[str, float, int]:
+    def get_lot_details(self, lot_type: str) -> tuple[str, float, int]:        
+        """
+        Retrieves the details of a specific lot type.
+
+        Args:
+            lot_type (str): The type of the lot for which details are to be retrieved.
+
+        Returns:
+            tuple[str, float, int]: A tuple containing the type of the lot, 
+            its price, and the quantity available for that price.
+        """
         with session:
             result = (
                 session.query(
@@ -489,6 +518,17 @@ class AccountDb(Telegram):
         return result
 
     def get_lots_by_type(self, lot_type: str, quantity: int) -> list[Account]:
+        """
+        Retrieves a list of Account objects for a specified lot type and quantity.
+
+        Args:
+            lot_type (str): The type of the lot to filter by.
+            quantity (int): The maximum number of lots to retrieve.
+
+        Returns:
+            list[Account]: A list of Account objects matching the specified lot type, 
+            limited to the specified quantity, and ordered by price.
+        """
         with session:
             result = (
                 session.query(Account)
@@ -500,6 +540,19 @@ class AccountDb(Telegram):
         return result
 
     def get_lot_texts_by_type(self, lot_type: str, quantity: int) -> list[dict[str, str]]:
+        """
+        Retrieves a list of dictionaries, where each dictionary contains the type of the lot
+        as the key and the text of the lot as the value, for a specified lot type and quantity.
+
+        Args:
+            lot_type (str): The type of the lot to filter by.
+            quantity (int): The maximum number of lots to retrieve.
+
+        Returns:
+            list[dict[str, str]]: A list of dictionaries containing the type of the lot as the
+            key and the text of the lot as the value, limited to the specified quantity, and
+            ordered by price.
+        """
         with session:
             lots = (
                 session.query(Account)

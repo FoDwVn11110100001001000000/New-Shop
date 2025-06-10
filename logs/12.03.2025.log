@@ -1,3 +1,0 @@
-2025-03-12 22:34:49.606 | INFO     | __main__:run:78 - Bot started
-2025-03-12 22:35:06.303 | INFO     | database.db:refresh_user:38 - ID: 617425053| Username: FoDwVn11110100001001000000| Refreshed last visit time.
-2025-03-12 22:35:06.304 | INFO     | database.db:get_user:62 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
