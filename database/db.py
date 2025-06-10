@@ -421,7 +421,7 @@ class AccountDb(Telegram):
         self.session = session
         self.telegram = Telegram()
 
-    def get_desription_main(self) -> list[tuple[str, float, int]]:
+    def get_description_main(self) -> list[tuple[str, float, int]]:
         """
         Gets a description of the main menu.
 

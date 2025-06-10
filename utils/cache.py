@@ -11,7 +11,7 @@ class RedisManager:
         port=config.redis_port,
         expire=config.redis_expire,
         db=0,
-        decode_responses=True   
+        decode_responses=True
     ):
         self.client = redis.Redis(
             host=host,
@@ -43,13 +43,24 @@ class RedisManager:
             return json.loads(raw)
         return []
 
-    async def get_all_reserved_types(self, telegram_id: str, type: str) -> list[str]:
-        """Получает все type1 из всех зарезервированных лотов"""
+    async def get_all_reserved_by_types(self, telegram_id: str, type: str) -> list[str]:
+        """Получает все type из всех зарезервированных лотов"""
         keys = await self.client.keys(f"{telegram_id}")
         types = []
         for key in keys:
             raw = await self.client.get(key)
             if raw:
                 lots = json.loads(raw)
-                types.extend(lot.get(type) for lot in lots if type in lot)
+                types.extend({type: lot[type]} for lot in lots if type in lot)
+        return types
+
+    async def get_all_reserved_types(self, telegram_id: str) -> list[dict[str, str]]:
+        """Получает все зарезервированные лоты (список словарей) по telegram_id"""
+        keys = await self.client.keys(f"{telegram_id}")
+        types = []
+        for key in keys:
+            raw = await self.client.get(key)
+            if raw:
+                lots = json.loads(raw)
+                types.extend(lots)
         return types

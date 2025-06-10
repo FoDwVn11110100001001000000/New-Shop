@@ -22,6 +22,7 @@ from populate_database import init_db
 from utils.decorators import exception_handler
 from utils.cache import RedisManager
 from utils.states import StateManager, StateList
+from utils.mix import substract_lots
 
 
 class Main:
@@ -62,8 +63,9 @@ class Main:
             lambda callback_query: callback_query.data.startswith("buy_")
             )
         self.dp.register_message_handler(self.handle_lot_input, state=StateList.LOT_MENU)
-        self.dp.register_callback_query_handler(self.purchase, text="purchase", state=StateList.LOT_MENU)
-        
+        self.dp.register_callback_query_handler(
+            self.purchase, text="purchase", state=StateList.LOT_MENU)
+
     @exception_handler
     async def start(self, message: Message, state: FSMContext) -> None:
         """
@@ -78,7 +80,7 @@ class Main:
             state (FSMContext): The FSM context for maintaining the state of the bot.
         """
         await state.finish()
-        
+
         # Init Redis
         await self.redis.connect()
 
@@ -112,14 +114,15 @@ class Main:
     @exception_handler
     async def main_menu(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
-        
+
         text = f'***{var.available}***\n\n'
 
-        account_stats = self.account.get_desription_main()
-        print(f'***acc stats***{account_stats}')
         telegram_id = self.telegram.data(obj=callback).telegram_id
+        reserved_lots = await self.redis.get_all_reserved_types(telegram_id=telegram_id)
+        account_stats = self.account.get_description_main()
+        substracted_stats = substract_lots(account_stats, reserved_lots)
 
-        for lot_type, price, quantity in account_stats:
+        for lot_type, price, quantity in substracted_stats:
             text += f"*{lot_type}* /// $*{price}* /// *{quantity}**{var.pcs}*\n"
 
         keyboard = self.keyboard.main_menu()
@@ -136,9 +139,9 @@ class Main:
         desc = [var.category]
 
         buttons = list()
-        lot_type = self.account.get_lot_type()
+        lot_types = self.account.get_lot_type()
 
-        for lot_type in lot_type:
+        for lot_type in lot_types:
             buttons.append(lot_type)
 
         keyboard = self.keyboard.lot_menu(buttons)
@@ -147,7 +150,7 @@ class Main:
             text=desc,
             keyboard=keyboard
         )
-    
+
     @exception_handler
     async def lot_prebuy_menu(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
@@ -177,7 +180,7 @@ class Main:
             await self.main_menu(message, state)
             return
 
-        if lot_quantity > 20 or lot_quantity < 0:    
+        if lot_quantity > 20 or lot_quantity < 0:
             await message.answer(var.input_quantity_exception)
             await self.main_menu(message, state)
             return
@@ -187,15 +190,12 @@ class Main:
         lot_type = lot_data.get("lot_type")
         lots = self.account.get_lot_texts_by_type(lot_type=lot_type, quantity=lot_quantity)
 
-        telegram_id = self.telegram.data(obj=message).telegram_id
-        await self.redis.reserve_lots(telegram_id=telegram_id, lots=lots)
-
         available_quantity = int(lot_data.get("available_quantity"))
         if available_quantity < lot_quantity:
             await message.answer(var.input_quantity_available)
             await self.main_menu(message, state)
             return
-        
+
         lot_info = self.account.get_lot_details(lot_type)
         await manager.set_data(key="lot_quantity", value=lot_quantity)
         total_price = float(lot_info[1]) * lot_quantity
@@ -206,6 +206,9 @@ class Main:
             await message.answer(var.input_balance_exception)
             await self.main_menu(message, state)
             return
+
+        telegram_id = self.telegram.data(obj=message).telegram_id
+        await self.redis.reserve_lots(telegram_id=telegram_id, lots=lots)
 
         desc = (
             f"{var.lot_list}: {lot_data.get('lot_type')}\n"
@@ -220,13 +223,13 @@ class Main:
             obj=message,
             text=desc,
             keyboard=keyboard
-        )   
+        )
+
 
     @exception_handler
     async def purchase(self, callback: CallbackQuery, state: FSMContext) -> None:
         manager = StateManager(state)
         lot_data = await manager.get_all_data()
-        print(f'***{lot_data}***')
 
         desc = (
             f'{var.lot_list}: {lot_data.get("lot_type")}\n'

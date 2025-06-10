@@ -1,0 +1,19 @@
+2025-06-11 01:28:31.497 | INFO     | __main__:run:263 - ***Bot started***
+2025-06-11 01:28:40.523 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-11 01:28:40.529 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-11 01:28:40.529 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-11 01:28:52.933 | INFO     | utils.cache:reserve_lots:35 - ID: 617425053| Reserved lots: [{"type1": "Despite understand everyone concern."}]
+2025-06-11 01:28:52.940 | INFO     | database.db:get_balance:170 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0
+2025-06-11 01:29:01.260 | INFO     | utils.cache:reserve_lots:35 - ID: 617425053| Reserved lots: [{"type1": "Despite understand everyone concern."}]
+2025-06-11 01:29:01.266 | INFO     | database.db:get_balance:170 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0
+2025-06-11 01:29:09.591 | INFO     | utils.cache:reserve_lots:35 - ID: 617425053| Reserved lots: [{"type1": "Despite understand everyone concern."}]
+2025-06-11 01:29:09.597 | INFO     | database.db:get_balance:170 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0
+2025-06-11 01:30:24.697 | INFO     | __main__:run:263 - ***Bot started***
+2025-06-11 01:30:34.964 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-11 01:30:34.968 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-11 01:30:34.968 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-11 01:30:40.578 | INFO     | utils.cache:reserve_lots:35 - ID: 617425053| Reserved lots: [{"type1": "Despite understand everyone concern."}]
+2025-06-11 01:30:40.583 | INFO     | database.db:get_balance:170 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0
+2025-06-11 01:30:45.465 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-11 01:30:45.469 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-11 01:30:45.469 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database

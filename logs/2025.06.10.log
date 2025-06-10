@@ -1,0 +1,20 @@
+2025-06-10 17:21:30.455 | INFO     | __main__:run:262 - ***Bot started***
+2025-06-10 17:21:32.319 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-10 17:21:32.323 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-10 17:21:32.323 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-10 17:21:38.896 | INFO     | utils.cache:reserve_lots:35 - ID: 617425053| Reserved lots: [{"type1": "Society despite career official year spend central sell. Bank voice oil improve visit several."}, {"type1": "Upon group market party. War short quickly its. Under skin clear teach itself. Over court give."}, {"type1": "Despite understand everyone concern."}, {"type1": "Technology increase present consider dog alone born. Nation whether those machine item address."}, {"type1": "Free exist offer identify part raise hold. Contain rest in local. Participant win local."}]
+2025-06-10 17:21:47.389 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-10 17:21:47.392 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-10 17:21:47.392 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-10 17:22:47.597 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-10 17:22:47.600 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-10 17:22:47.600 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-10 20:00:36.464 | INFO     | __main__:run:262 - ***Bot started***
+2025-06-10 20:00:41.876 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-10 20:00:41.879 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-10 20:00:41.879 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-10 20:00:51.587 | INFO     | utils.cache:reserve_lots:35 - ID: 617425053| Reserved lots: [{"type1": "Society despite career official year spend central sell. Bank voice oil improve visit several."}, {"type1": "Upon group market party. War short quickly its. Under skin clear teach itself. Over court give."}, {"type1": "Despite understand everyone concern."}, {"type1": "Technology increase present consider dog alone born. Nation whether those machine item address."}, {"type1": "Free exist offer identify part raise hold. Contain rest in local. Participant win local."}]
+2025-06-10 21:05:27.934 | INFO     | __main__:run:261 - ***Bot started***
+2025-06-10 21:05:43.276 | INFO     | utils.cache:connect:27 - ✅ Success connection to Redis
+2025-06-10 21:05:43.280 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-10 21:05:43.280 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
