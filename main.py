@@ -53,13 +53,12 @@ class Main:
         """
         Register all handlers for the bot.
         """
-        self.dp.register_message_handler(self.start, commands=["start"])
+        self.dp.register_message_handler(self.start, commands=["start"], state="*")
         self.dp.register_callback_query_handler(self.check_subscription, text="check_subscription")
-        self.dp.register_callback_query_handler(self.main_menu, text="main_menu")
+        self.dp.register_callback_query_handler(self.main_menu, text="main_menu", state="*")
         self.dp.register_callback_query_handler(self.lot_list, text="lot_list")
         self.dp.register_callback_query_handler(self.profile, text="profile")
         self.dp.register_callback_query_handler(self.support, text="support")
-        self.dp.register_callback_query_handler(self.accept_payment, text="accept_payment")
         self.dp.register_callback_query_handler(
             self.lot_prebuy_menu,
             lambda callback_query: callback_query.data.startswith("buy_")
@@ -171,6 +170,7 @@ class Main:
             text=desc,
             keyboard=keyboard
         )
+
         manager = StateManager(state)
         await manager.set_state(StateList.LOT_MENU)
         await manager.set_data(key="lot_type", value=lot_type)
@@ -286,7 +286,8 @@ class Main:
     @exception_handler
     async def handle_topup_input(self, message: Message, state: FSMContext):
         try:
-            topup_quantity = round(float(message.text.strip()), 2)
+            text = message.text.strip().replace(',', '.')
+            topup_quantity = round(float(text), 2)
         except ValueError:
             await message.answer(var.input_exception)
             await self.main_menu(message, state)
@@ -312,7 +313,8 @@ class Main:
             await self.main_menu(message, state)
             return
 
-        is_topup = self.user.topup_balance(topup_quantity=topup_quantity)
+        is_topup = self.user.topup_balance(
+            obj=message, topup_quantity=topup_quantity)
         if not is_topup:
             await message.answer(var.topup_exception)
             await self.main_menu(message, state)
@@ -320,12 +322,6 @@ class Main:
 
         await message.answer(var.topup_success)
         await self.main_menu(message, state)
-
-
-    @exception_handler
-    async def accept_payment(self, callback: CallbackQuery, state: FSMContext) -> None:
-        await state.finish()
-        print('accept_payment')
 
 
     @exception_handler

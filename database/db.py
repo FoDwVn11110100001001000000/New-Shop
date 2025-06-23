@@ -129,7 +129,7 @@ class UserDb(Telegram):
                 )
             self.session.commit()
 
-    def topup_balance(self, topup_quantity: float) -> bool:
+    def topup_balance(self, obj: Message|CallbackQuery, topup_quantity: float) -> bool:
         """
         Adds money to user's balance.
         
@@ -139,18 +139,20 @@ class UserDb(Telegram):
         Returns:
             bool: True if the user was found and their balance was updated, False otherwise.
         """
+        telegram = self.telegram.data(obj)
+
         with self.session:
-            user = self.session.query(User).filter_by(telegram_id=self.telegram_id).first()
+            user = self.session.query(User).filter_by(telegram_id=telegram.telegram_id).first()
             if user:
                 user.balance += topup_quantity
                 self.session.commit()
                 log.info(
-                    f'ID: {self.telegram_id}| Username: {self.username}| '
+                    f'ID: {telegram.telegram_id}| Username: {telegram.username}| '
                     f'Top up balance to {topup_quantity}'
                     )
                 return True
             else:
-                log.error(f'ID: {self.telegram_id}| Username: {self.username}| User not found')
+                log.error(f'ID: {telegram.telegram_id}| Username: {telegram.username}| User not found')
                 return False
 
     def get_balance(self) -> str|None:

@@ -1,0 +1,106 @@
+2025-06-24 01:20:39.467 | INFO     | __main__:run:341 - ***Bot started***
+2025-06-24 01:20:40.555 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:20:40.558 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:20:40.558 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:20:41.945 | INFO     | database.db:get_balance_and_registration:362 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:20:48.021 | INFO     | utils.payment:create_invoice:51 - Invoice was created. Invoice ID: 683181
+2025-06-24 01:20:58.352 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 0
+2025-06-24 01:21:08.502 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 1
+2025-06-24 01:21:18.615 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 2
+2025-06-24 01:21:28.735 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 3
+2025-06-24 01:21:38.871 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 4
+2025-06-24 01:21:49.005 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 5
+2025-06-24 01:21:59.128 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 6
+2025-06-24 01:22:09.262 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 7
+2025-06-24 01:22:18.394 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:22:18.396 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:22:18.398 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:22:19.395 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 8
+2025-06-24 01:22:19.815 | INFO     | database.db:get_balance_and_registration:362 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:22:29.551 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 9
+2025-06-24 01:22:35.636 | INFO     | database.db:get_balance_and_registration:362 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:22:39.682 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 10
+2025-06-24 01:22:49.813 | INFO     | utils.payment:check_payment:36 - Invoice 683181 is active. Attempts: 11
+2025-06-24 01:23:08.367 | INFO     | __main__:run:334 - ***Bot started***
+2025-06-24 01:23:09.296 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:23:09.299 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:23:09.299 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:23:13.055 | INFO     | database.db:get_balance_and_registration:362 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:23:15.391 | INFO     | utils.payment:create_invoice:51 - Invoice was created. Invoice ID: 683183
+2025-06-24 01:23:25.600 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 0
+2025-06-24 01:23:35.733 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 1
+2025-06-24 01:23:45.867 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 2
+2025-06-24 01:23:56.015 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 3
+2025-06-24 01:24:06.151 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 4
+2025-06-24 01:24:16.329 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 5
+2025-06-24 01:24:26.455 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 6
+2025-06-24 01:24:36.571 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 7
+2025-06-24 01:24:46.715 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 8
+2025-06-24 01:24:56.839 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 9
+2025-06-24 01:25:06.973 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 10
+2025-06-24 01:25:17.109 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 11
+2025-06-24 01:25:27.229 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 12
+2025-06-24 01:25:37.369 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 13
+2025-06-24 01:25:47.516 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 14
+2025-06-24 01:25:57.658 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 15
+2025-06-24 01:26:07.817 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 16
+2025-06-24 01:26:17.949 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 17
+2025-06-24 01:26:28.081 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 18
+2025-06-24 01:26:38.244 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 19
+2025-06-24 01:26:48.378 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 20
+2025-06-24 01:26:58.503 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 21
+2025-06-24 01:27:08.636 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 22
+2025-06-24 01:27:18.768 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 23
+2025-06-24 01:27:28.899 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 24
+2025-06-24 01:27:39.018 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 25
+2025-06-24 01:27:49.162 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 26
+2025-06-24 01:27:59.291 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 27
+2025-06-24 01:28:09.425 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 28
+2025-06-24 01:28:19.541 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 29
+2025-06-24 01:28:29.658 | INFO     | utils.payment:check_payment:36 - Invoice 683183 is active. Attempts: 30
+2025-06-24 01:30:14.774 | INFO     | __main__:run:335 - ***Bot started***
+2025-06-24 01:30:19.652 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:30:19.655 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:30:19.656 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:30:21.031 | INFO     | database.db:get_balance_and_registration:362 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:30:37.282 | INFO     | utils.payment:create_invoice:51 - Invoice was created. Invoice ID: 683187
+2025-06-24 01:30:47.570 | INFO     | utils.payment:check_payment:36 - Invoice 683187 is active. Attempts: 0
+2025-06-24 01:30:47.694 | INFO     | utils.payment:check_payment:28 - Invoice 683187 was paid
+2025-06-24 01:44:08.025 | INFO     | __main__:run:335 - ***Bot started***
+2025-06-24 01:44:14.681 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:44:14.684 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:44:14.684 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:44:16.004 | INFO     | database.db:get_balance_and_registration:364 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:44:18.673 | INFO     | utils.payment:create_invoice:51 - Invoice was created. Invoice ID: 683193
+2025-06-24 01:44:28.896 | INFO     | utils.payment:check_payment:36 - Invoice 683193 is active. Attempts: 0
+2025-06-24 01:44:29.011 | INFO     | utils.payment:check_payment:28 - Invoice 683193 was paid
+2025-06-24 01:44:54.246 | INFO     | __main__:run:336 - ***Bot started***
+2025-06-24 01:44:56.993 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:44:56.996 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:44:56.996 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:47:26.180 | INFO     | __main__:run:337 - ***Bot started***
+2025-06-24 01:47:27.380 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:47:27.383 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:47:27.384 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:48:30.264 | INFO     | __main__:run:337 - ***Bot started***
+2025-06-24 01:48:31.702 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:48:31.705 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:48:31.705 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:48:58.499 | INFO     | __main__:run:337 - ***Bot started***
+2025-06-24 01:48:59.032 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:48:59.034 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:48:59.035 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:49:02.045 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
+2025-06-24 01:49:02.048 | INFO     | database.db:refresh_user:53 - ID: 617425053 | Username: FoDwVn11110100001001000000 Changed username in the database. Old: FoDwVn11110100001001000000
+2025-06-24 01:49:02.048 | INFO     | database.db:get_user:93 - ID: 617425053| Username: FoDwVn11110100001001000000| Data: {'name': 'DFes', 'username': 'FoDwVn11110100001001000000', 'balance': 0.0, 'language': 'RUS', 'is_ban': False}| Was already in the database
+2025-06-24 01:49:03.011 | INFO     | database.db:get_balance_and_registration:364 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 0.0, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:49:08.451 | INFO     | utils.payment:create_invoice:51 - Invoice was created. Invoice ID: 683195
+2025-06-24 01:49:18.667 | INFO     | utils.payment:check_payment:36 - Invoice 683195 is active. Attempts: 0
+2025-06-24 01:49:18.787 | INFO     | utils.payment:check_payment:28 - Invoice 683195 was paid
+2025-06-24 01:49:18.801 | INFO     | database.db:topup_balance:149 - ID: 617425053| Username: FoDwVn11110100001001000000| Top up balance to 1.1
+2025-06-24 01:49:23.991 | INFO     | database.db:get_balance_and_registration:364 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 1.1, Registration: 2025-06-23 13:30:21.956657, Purchases: 0
+2025-06-24 01:49:29.115 | INFO     | utils.payment:create_invoice:51 - Invoice was created. Invoice ID: 683196
+2025-06-24 01:49:39.330 | INFO     | utils.payment:check_payment:36 - Invoice 683196 is active. Attempts: 0
+2025-06-24 01:49:39.442 | INFO     | utils.payment:check_payment:28 - Invoice 683196 was paid
+2025-06-24 01:49:39.449 | INFO     | database.db:topup_balance:149 - ID: 617425053| Username: FoDwVn11110100001001000000| Top up balance to 1.1
+2025-06-24 01:49:42.214 | INFO     | database.db:get_balance_and_registration:364 - ID: 617425053| Username: FoDwVn11110100001001000000| Balance: 2.2, Registration: 2025-06-23 13:30:21.956657, Purchases: 0

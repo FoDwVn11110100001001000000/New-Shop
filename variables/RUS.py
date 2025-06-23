@@ -29,7 +29,7 @@ class Strings:
     registration_date = "Дата регистрации"
     purchase_quantity = "Кол-во покупок"
     topup_desc = "Напишите сумму к пополнению кошелька ниже"
-    payment_desc = 'Оплатите чек и нажмите "Принять оплату"'
+    payment_desc = 'Оплатите чек и ждите обработку платежа'
     accept_payment = 'Принять оплату'
     payment_bill = 'Чек на оплату в CryptoBot'
     payment_exception = "Оплата не прошла"
