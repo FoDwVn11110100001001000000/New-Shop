@@ -103,7 +103,7 @@ class Keyboards:
 
     def one_button(self) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup(row_width=1)
-        keyboard.add( 
+        keyboard.add(
             InlineKeyboardButton(var.main_menu, callback_data='main_menu')
         )
         return keyboard
@@ -112,6 +112,23 @@ class Keyboards:
         keyboard = InlineKeyboardMarkup(row_width=1)
         keyboard.add(
             InlineKeyboardButton(var.purchase, callback_data='purchase'),
+            InlineKeyboardButton(var.main_menu, callback_data='main_menu')
+        )
+        return keyboard
+
+    def add_funds_menu(self) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup(row_width=1)
+        keyboard.add(
+            InlineKeyboardButton(var.add_funds, callback_data='topup_balance'),
+            InlineKeyboardButton(var.main_menu, callback_data='main_menu')
+        )
+        return keyboard
+
+    def payment_menu(self, url: str) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup(row_width=1)
+        keyboard.add(
+            InlineKeyboardButton(var.payment_bill, url=url),
+            InlineKeyboardButton(var.accept_payment, callback_data='accept_payment'),
             InlineKeyboardButton(var.main_menu, callback_data='main_menu')
         )
         return keyboard

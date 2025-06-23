@@ -23,6 +23,7 @@ from utils.decorators import exception_handler
 from utils.cache import RedisManager
 from utils.states import StateManager, StateList
 from utils.mix import substract_lots
+from utils.payment import check_payment, create_invoice
 
 
 class Main:
@@ -58,13 +59,17 @@ class Main:
         self.dp.register_callback_query_handler(self.lot_list, text="lot_list")
         self.dp.register_callback_query_handler(self.profile, text="profile")
         self.dp.register_callback_query_handler(self.support, text="support")
+        self.dp.register_callback_query_handler(self.accept_payment, text="accept_payment")
         self.dp.register_callback_query_handler(
             self.lot_prebuy_menu,
             lambda callback_query: callback_query.data.startswith("buy_")
             )
         self.dp.register_message_handler(self.handle_lot_input, state=StateList.LOT_MENU)
+        self.dp.register_message_handler(self.handle_topup_input, state=StateList.TOPUP_BALANCE)
         self.dp.register_callback_query_handler(
             self.purchase, text="purchase", state=StateList.LOT_MENU)
+        self.dp.register_callback_query_handler(self.topup_balance, text="topup_balance")
+
 
     @exception_handler
     async def start(self, message: Message, state: FSMContext) -> None:
@@ -244,12 +249,84 @@ class Main:
             keyboard=keyboard
         )
 
-
-
     @exception_handler
     async def profile(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
-        print('profile')
+
+        user_data = self.user.get_balance_and_registration(obj=callback)
+
+        desc = (
+            f'{var.ids}: {callback.message.chat.id}\n'
+            f'{var.acc_balance}: ${user_data.get("balance", None)} USDT\n'
+            f'{var.registration_date}: {user_data.get("registration_date").strftime("%d/%m/%y")}\n'
+            f'{var.purchase_quantity}: {user_data.get("purchases")}\n'
+        )
+
+        keyboard = self.keyboard.add_funds_menu()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=desc,
+            keyboard=keyboard
+        )
+
+    @exception_handler
+    async def topup_balance(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=var.topup_desc,
+            keyboard=keyboard
+        )
+
+        manager = StateManager(state)
+        await manager.set_state(StateList.TOPUP_BALANCE)
+
+    @exception_handler
+    async def handle_topup_input(self, message: Message, state: FSMContext):
+        try:
+            topup_quantity = round(float(message.text.strip()), 2)
+        except ValueError:
+            await message.answer(var.input_exception)
+            await self.main_menu(message, state)
+            return
+
+        if topup_quantity <= 0:
+            await message.answer(var.input_negative_number)
+            await self.main_menu(message, state)
+            return
+
+        url = create_invoice(amount=topup_quantity)
+
+        keyboard = self.keyboard.payment_menu(url=url.get('pay_url'))
+        await self.send_keyboard.keyboard(
+            obj=message,
+            text=var.payment_desc,
+            keyboard=keyboard
+        )
+
+        pay_check = await check_payment(url.get('invoice_id'))
+        if not pay_check:
+            await message.answer(var.payment_exception)
+            await self.main_menu(message, state)
+            return
+
+        is_topup = self.user.topup_balance(topup_quantity=topup_quantity)
+        if not is_topup:
+            await message.answer(var.topup_exception)
+            await self.main_menu(message, state)
+            return
+
+        await message.answer(var.topup_success)
+        await self.main_menu(message, state)
+
+
+    @exception_handler
+    async def accept_payment(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+        print('accept_payment')
+
 
     @exception_handler
     async def support(self, callback: CallbackQuery, state: FSMContext) -> None:

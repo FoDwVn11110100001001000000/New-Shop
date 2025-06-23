@@ -7,7 +7,7 @@ from pytz import timezone
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, BigInteger, Text, ForeignKey
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship, validates
 from env import Config as config
 
 
@@ -30,9 +30,17 @@ class User(Base):
     language = Column(String)
     last_visit = Column(DateTime)
     is_ban = Column(Boolean, default=False)
+    registration_date = Column(DateTime, default=lambda: datetime.now(tz))
 
     # Relationships
     sell_logs = relationship("SellLog", back_populates="user")
+
+    @validates('registration_date')
+    def validate_registration_date(self, key, value):
+        if self.registration_date is not None and value != self.registration_date:
+            raise ValueError("Cannot modify registration_date once it is set.")
+        return value
+
 
 class SellLog(Base):
     __tablename__ = 'sell_log'

@@ -22,3 +22,7 @@ class Config:
     redis_host = os.environ.get('REDIS_HOST')
     redis_port = os.environ.get('REDIS_PORT')
     redis_expire = os.environ.get('REDIS_EXPIRE')
+    testnet = os.environ.get('TESTNET')
+    pay_currency = os.environ.get('PAY_CURRENCY')
+    invoice_counter = os.environ.get('INVOICE_COUNTER')
+    crypto_pay_token = os.environ.get('CRYPTO_PAY')

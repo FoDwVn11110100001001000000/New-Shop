@@ -129,7 +129,7 @@ class UserDb(Telegram):
                 )
             self.session.commit()
 
-    def topup_balance(self, new_balance: str) -> bool:
+    def topup_balance(self, topup_quantity: float) -> bool:
         """
         Adds money to user's balance.
         
@@ -142,15 +142,15 @@ class UserDb(Telegram):
         with self.session:
             user = self.session.query(User).filter_by(telegram_id=self.telegram_id).first()
             if user:
-                user.balance += float(new_balance)
+                user.balance += topup_quantity
                 self.session.commit()
                 log.info(
                     f'ID: {self.telegram_id}| Username: {self.username}| '
-                    f'Changed balance to: {new_balance}'
+                    f'Top up balance to {topup_quantity}'
                     )
                 return True
             else:
-                log.error('ID: {self.telegram_id}| Username: {self.username}| User not found')
+                log.error(f'ID: {self.telegram_id}| Username: {self.username}| User not found')
                 return False
 
     def get_balance(self) -> str|None:
@@ -338,6 +338,43 @@ class UserDb(Telegram):
                     f'ID: {self.telegram_id}| Username: {self.username}| '
                     f'Error in checking ban status of user {telegram_id}: {e}'
                     )
+
+    def get_balance_and_registration(
+            self, obj: Message|CallbackQuery) -> tuple[float | None, datetime | None]:
+        """
+        Retrieves user's balance and registration date from the database.
+
+        Args:
+            obj (Message|CallbackQuery): Telegram object with user data
+
+        Returns:
+            tuple[float | None, datetime | None]: 
+            A tuple containing the user's balance and registration date
+            if the user was found, else (None, None)
+        """
+        telegram_id = self.telegram.data(obj).telegram_id
+
+        with self.session:
+            try:
+                user = self.session.query(User).filter_by(telegram_id=telegram_id).first()
+                if user:
+                    purchase_count = len(user.sell_logs)
+                    log.info(
+                        f'ID: {telegram_id}| Username: {user.username}| '
+                        f'Balance: {user.balance}, Registration: {user.registration_date}, '
+                        f'Purchases: {purchase_count}'
+                    )
+                    return {
+                        'balance': user.balance,
+                        'registration_date': user.registration_date,
+                        'purchases': purchase_count
+                    }
+                return None, None
+            except SQLAlchemyError as e:
+                log.error(
+                    f"Error in getting balance and registration date for user: {telegram_id}: {e}"
+                )
+                return None, None
 
 
 class SelllogDb:
