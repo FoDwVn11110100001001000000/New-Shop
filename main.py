@@ -327,9 +327,15 @@ class Main:
     @exception_handler
     async def support(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
-        print('support')
 
+        keyboard = self.keyboard.support_menu()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=var.support,
+            keyboard=keyboard
+        )
 
+        
 
 
     @exception_handler

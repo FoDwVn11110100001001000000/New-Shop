@@ -133,3 +133,14 @@ class Keyboards:
         )
         return keyboard
 
+    def support_menu(self) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup(row_width=1)
+
+        admins_list = config.admins.split(', ')
+        for admin in admins_list:
+            keyboard.add(
+                InlineKeyboardButton(admin, url=f'https://t.me/{admin}')
+            )
+        
+        keyboard.add(InlineKeyboardButton(var.main_menu, callback_data='main_menu'))
+        return keyboard
