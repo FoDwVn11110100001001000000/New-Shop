@@ -85,9 +85,6 @@ class Main:
         """
         await state.finish()
 
-        # Init Redis
-        await self.redis.connect()
-
         user_data = self.user.get_user(obj=message)
         if not user_data:
             self.user.create_user(obj=message)
@@ -335,13 +332,29 @@ class Main:
             keyboard=keyboard
         )
 
-        
-
-
+    # @exception_handler
+    # def run(self):
+    #     log.info("***Bot started***")
+    #     executor.start_polling(self.dp, skip_updates=True)
     @exception_handler
-    def run(self):
+    async def run(self):
+        await self.redis.connect()
         log.info("***Bot started***")
-        executor.start_polling(self.dp, skip_updates=True)
+
+        try:
+            await self.dp.start_polling(self.bot)
+        finally:
+            session = await self.bot.get_session()
+            await session.close()
+
+
+# if __name__ == "__main__":
+#     # Create and populate the database
+#     Base.metadata.create_all(engine)
+#     init_db()
+
+#     bot_instance = Main()
+#     bot_instance.run()
 
 
 if __name__ == "__main__":
@@ -350,4 +363,6 @@ if __name__ == "__main__":
     init_db()
 
     bot_instance = Main()
-    bot_instance.run()
+    import asyncio
+    asyncio.run(bot_instance.run())
+

@@ -1,0 +1,56 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+shop-bot-py3.11/
+
+# Logs
+*.log
+logs/
+
+# Databases
+*.sqlite3
+*.db
+*.db-journal
+
+# Environment variables
+.env
+.env.*
+
+# Redis dump
+dump.rdb
+
+# Cache
+.cache/
+*.cache
+
+# Editor config
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Executables
+*.exe
+*.out
+*.app
+
+# PyInstaller build folders
+dist/
+build/
+
+# Misc
+*.bak
+*.swp
+*.tmp

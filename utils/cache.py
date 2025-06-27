@@ -13,7 +13,8 @@ class RedisManager:
         port (int): Redis port. Defaults to config.redis_port.
         expire (int): Expiration time in seconds. Defaults to config.redis_expire.
         db (int, optional): Redis database number. Defaults to 0.
-        decode_responses (bool, optional): If True, all responses will be decoded with utf-8. Defaults to True.
+        decode_responses (bool, optional): If True,
+        all responses will be decoded with utf-8. Defaults to True.
     """
     def __init__(
         self,
