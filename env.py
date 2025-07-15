@@ -26,3 +26,4 @@ class Config:
     pay_currency = os.environ.get('PAY_CURRENCY')
     invoice_counter = os.environ.get('INVOICE_COUNTER')
     crypto_pay_token = os.environ.get('CRYPTO_PAY')
+    my_id = os.environ.get('MY_ID')

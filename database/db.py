@@ -5,7 +5,7 @@ This module contains classes for working with the database.
 from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import func
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from aiogram.types import Message, CallbackQuery
 from utils.logs import log
 from database.models import User, SellLog, Account,tz, session
@@ -424,22 +424,30 @@ class SelllogDb:
         telegram = self.telegram.data(obj)
 
         with self.session:
-            sell_log = SellLog(
-                telegram_id=telegram.telegram_id,
-                time=datetime.now(tz),
-                name=telegram.name,
-                username=telegram.username,
-                type=folder_name,
-                filename=filename,
-                content=content,
-                price= price
-            )
-            self.session.add(sell_log)
-            self.session.commit()
-            log.info(
-                f'ID: {telegram.telegram_id}| Username: {telegram.username}| '
-                f'Added sell log to the database'
+            try:
+                sell_log = SellLog(
+                    telegram_id=telegram.telegram_id,
+                    time=datetime.now(tz),
+                    name=telegram.name,
+                    username=telegram.username,
+                    type=folder_name,
+                    filename=filename,
+                    content=content,
+                    price= price
                 )
+                self.session.add(sell_log)
+                self.session.commit()
+                log.info(
+                    f'ID: {telegram.telegram_id}| Username: {telegram.username}| '
+                    f'Added sell log to the database'
+                    )
+            except IntegrityError as e:
+                self.session.rollback()
+                log.error(
+                    f'ID: {telegram.telegram_id}| Username: {telegram.username}| '
+                    f'Duplicate in the sell log: {e}'
+                )
+                return filename
 
     def topup_log(self, folder_name: str, filename: str, price: float, obj: Message|CallbackQuery) -> None:
         """
@@ -623,3 +631,29 @@ class AccountDb(Telegram):
                 Account.filename == filename
             ).delete(synchronize_session=False)
             self.session.commit()
+
+
+    def create_account(
+        self,
+        lot_type: str,
+        lot_format: str,
+        filename: str,
+        txt: str,
+        price: float,
+        added_by: str
+    ) -> Account | None:
+        new_account = Account(
+            lot_type=lot_type,
+            lot_format=lot_format,
+            filename=filename,
+            txt=txt,
+            price=price,
+            added_by=added_by
+        )
+        try:
+            with self.session.begin():
+                self.session.add(new_account)
+            return new_account
+        except IntegrityError:
+            self.session.rollback()
+            return None

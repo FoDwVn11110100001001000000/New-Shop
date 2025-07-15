@@ -1,6 +1,6 @@
 import json
-import redis.asyncio as redis
 from utils.logs import log
+import redis.asyncio as redis
 from env import Config as config
 
 

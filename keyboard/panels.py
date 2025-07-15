@@ -69,7 +69,7 @@ class Keyboards:
         )
         return keyboard
 
-    def main_menu(self) -> InlineKeyboardMarkup:
+    def main_menu(self, is_admin: bool = False) -> InlineKeyboardMarkup:
         """
         Method for creating a keyboard with buttons to navigate to the main menu.
 
@@ -82,6 +82,10 @@ class Keyboards:
             InlineKeyboardButton(var.profile, callback_data='profile'),
             InlineKeyboardButton(var.support, callback_data='support')
         )
+        if is_admin:
+            keyboard.add(
+                InlineKeyboardButton(var.admin_panel, callback_data='admin_panel')
+            )
         return keyboard
 
     def lot_menu(self, buttons_list: list[str]) -> InlineKeyboardMarkup:
@@ -144,6 +148,17 @@ class Keyboards:
             keyboard.add(
                 InlineKeyboardButton(admin, url=f'https://t.me/{admin}')
             )
-        
+
         keyboard.add(InlineKeyboardButton(var.main_menu, callback_data='main_menu'))
         return keyboard
+
+    def admin_panel_keyboard(self) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup(row_width=1)
+        keyboard.add(
+            InlineKeyboardButton(var.admin_add_lots, callback_data='admin_add_lots'),
+            InlineKeyboardButton(var.admin_change_balance, callback_data='admin_change_balance'),
+            InlineKeyboardButton(var.admin_change_price, callback_data='admin_change_price'),
+            InlineKeyboardButton(var.main_menu, callback_data='main_menu')
+        )
+        return keyboard
+

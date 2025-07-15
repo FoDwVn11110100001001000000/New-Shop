@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 class StateList(StatesGroup):
     LOT_MENU = State()
     TOPUP_BALANCE = State()
+    ADMIN_ADD_LOTS = State()
 
 
 class StateManager:

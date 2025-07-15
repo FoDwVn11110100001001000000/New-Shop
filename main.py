@@ -5,14 +5,17 @@ keyboards, user database, and channel subscription checks. Also registers the
 handlers for bot commands and callbacks.
 """
 
-import io
 import zipfile
+import aiohttp
+from io import BytesIO
 from datetime import datetime
 from aiogram.types import Message, CallbackQuery, InputFile
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.utils import executor
+from aiogram.types import ContentTypes
+
 
 from keyboard.panels import Keyboards, TelegramChannelSubscription
 from keyboard.keyboard_sender import KeyboardSender
@@ -69,10 +72,20 @@ class Main:
             )
         self.dp.register_message_handler(self.handle_lot_input, state=StateList.LOT_MENU)
         self.dp.register_message_handler(self.handle_topup_input, state=StateList.TOPUP_BALANCE)
+        self.dp.register_message_handler(self.admin_add_lots_input, state=StateList.ADMIN_ADD_LOTS)
+        self.dp.register_message_handler(
+            self.handle_zip_file,
+            content_types=ContentTypes.DOCUMENT,
+            state=StateList.ADMIN_ADD_LOTS
+        )
         self.dp.register_callback_query_handler(
             self.purchase, text="purchase", state=StateList.LOT_MENU)
         self.dp.register_callback_query_handler(self.topup_balance, text="topup_balance")
-
+        self.dp.register_callback_query_handler(self.admin_panel, text="admin_panel")
+        self.dp.register_callback_query_handler(self.admin_add_lots, text="admin_add_lots")
+        self.dp.register_callback_query_handler(
+            self.admin_change_balance, text="admin_change_balance")
+        self.dp.register_callback_query_handler(self.admin_change_price, text="admin_change_price")
 
     @exception_handler
     async def start(self, message: Message, state: FSMContext) -> None:
@@ -122,18 +135,23 @@ class Main:
 
         text = f'***{var.available}***\n\n'
 
-        telegram_id = self.telegram.data(obj=callback).telegram_id
-        reserved_lots = await self.redis.get_all_reserved_types(telegram_id=telegram_id)
+        telegram = self.telegram.data(obj=callback)
+        reserved_lots = await self.redis.get_all_reserved_types(telegram_id=telegram.telegram_id)
         account_stats = self.account.get_description_main()
 
         substracted_stats = substract_lots(
             db_stats=account_stats, reserved_lots=reserved_lots)
-        
 
         for lot_type, price, quantity in substracted_stats:
             text += f"*{lot_type}* /// $*{price}* /// *{quantity}**{var.pcs}*\n"
 
-        keyboard = self.keyboard.main_menu()
+        
+        if telegram.username in config.admins.split(', '):
+            is_admin = True
+        else:
+            is_admin = False
+
+        keyboard = self.keyboard.main_menu(is_admin=is_admin)
         await self.send_keyboard.keyboard(
             obj=callback,
             text=text,
@@ -258,7 +276,7 @@ class Main:
 
         for lot in lot_data.get("lots"):
             values = list(lot.values())
-            self.selllog.sell_log(
+            result = self.selllog.sell_log(
                 folder_name=lot_data.get("lot_type"),
                 filename=values[0],
                 content=values[1],
@@ -267,8 +285,11 @@ class Main:
             )
             self.account.delete_by_filename(
                 filename=values[0])
+            if result:
+                await self.bot.send_message(chat_id=config.my_id, text=f"{var.duplicate_logs}{result}")
+                continue
 
-        zip_buffer = io.BytesIO()
+        zip_buffer = BytesIO()
 
         with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
             for lot in lots:
@@ -278,7 +299,7 @@ class Main:
 
         zip_buffer.seek(0)
         date_now = datetime.now().strftime("%d-%m-%y %H-%M")
-        zip_file = io.BytesIO(zip_buffer.read())
+        zip_file = BytesIO(zip_buffer.read())
         zip_file.name = f"{date_now}.zip"
 
         await self.bot.send_document(
@@ -380,6 +401,116 @@ class Main:
             text=var.support,
             keyboard=keyboard
         )
+
+    @exception_handler
+    async def admin_panel(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+        telegram = self.telegram.data(obj=callback)
+
+        keyboard = self.keyboard.admin_panel_keyboard()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=f'{var.admin_panel_desc}{telegram.username}',
+            keyboard=keyboard
+        )
+
+    @exception_handler
+    async def admin_add_lots(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=var.admin_add_lots_desc,
+            keyboard=keyboard
+        )
+        manager = StateManager(state)
+        await manager.set_state(StateList.ADMIN_ADD_LOTS)
+
+    @exception_handler
+    async def admin_add_lots_input(self, message: Message, state: FSMContext):
+        text = [element.strip() for element in message.text.split(',')]
+
+        try:
+            if len(text) != 2:
+                raise ValueError
+            price = float(text[1])
+        except ValueError:
+            await message.answer(var.admin_add_lots_exception)
+            await self.main_menu(message, state)
+            return
+
+        manager = StateManager(state)
+        await manager.set_data(key="price", value=price)
+        await manager.set_data(key="lot_type", value=text[0])
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=message,
+            text=var.admin_add_lots_zip,
+            keyboard=keyboard
+        )
+
+    async def handle_zip_file(self, message: Message, state: FSMContext):
+        if message.document.mime_type != 'application/zip':
+            await message.answer(var.zip_archive_exception)
+            return
+
+        # Получаем ссылку на файл
+        file_info = await self.bot.get_file(message.document.file_id)
+        file_path = file_info.file_path
+        file_url = f"https://api.telegram.org/file/bot{config.token}/{file_path}"
+
+        # Download the zip file
+        async with aiohttp.ClientSession() as session:
+            async with session.get(file_url) as resp:
+                if resp.status != 200:
+                    await message.answer(var.download_error)
+                    return
+                zip_bytes = await resp.read()
+
+        # Extract text files from the zip
+        extracted_files = []
+        with zipfile.ZipFile(BytesIO(zip_bytes)) as zipf:
+            for name in zipf.namelist():
+                if name.endswith('.txt'):
+                    with zipf.open(name) as f:
+                        text = f.read().decode('utf-8')
+                        extracted_files.append((name, text))
+
+        if not extracted_files:
+            await message.answer(var.no_files)
+            return
+
+        manager = StateManager(state)
+        data = await manager.get_all_data()
+
+
+        for filename, content in extracted_files:
+            result = self.account.create_account(
+                lot_type=data.get('lot_type'),
+                lot_format='txt',
+                filename=filename,
+                txt=content,
+                price=data.get('price'),
+                added_by=message.from_user.username
+            )
+            if not result:
+                await self.bot.send_message(chat_id=config.my_id, text=f"{var.duplicate_download}{filename}")
+                await message.answer(f'{var.duplicate_download}{filename}')
+                continue
+
+
+
+    @exception_handler
+    async def admin_change_balance(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+        print('admin_change_balance')
+
+    @exception_handler
+    async def admin_change_price(self, callback: CallbackQuery, state: FSMContext) -> None:
+        await state.finish()
+        print('admin_change_price')
 
     @exception_handler
     async def run(self):
