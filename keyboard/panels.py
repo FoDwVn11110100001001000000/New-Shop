@@ -99,6 +99,9 @@ class Keyboards:
         for button in buttons_list:
             keyboard.add(
                 InlineKeyboardButton(button, callback_data=f'buy_{button}'))
+        keyboard.add(
+            InlineKeyboardButton(var.main_menu, callback_data='main_menu')
+        )
         return keyboard
 
     def one_button(self) -> InlineKeyboardMarkup:

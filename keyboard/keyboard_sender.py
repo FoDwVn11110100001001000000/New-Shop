@@ -62,6 +62,9 @@ class KeyboardSender:
                 # In case of message not modified
                 pass
 
+            except Exception as e:
+                print(e)
+
         elif isinstance(obj, CallbackQuery):
             # Probably callback query
             try:
@@ -83,3 +86,6 @@ class KeyboardSender:
             except MessageNotModified:
                 # In case of message not modified
                 pass
+
+            except Exception as e:
+                print(e)

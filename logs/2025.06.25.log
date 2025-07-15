@@ -1,4 +1,0 @@
-2025-06-25 19:57:03.022 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
-2025-06-25 19:57:03.023 | INFO     | __main__:run:338 - ***Bot started***
-2025-06-25 19:57:10.438 | INFO     | utils.cache:connect:43 - ✅ Success connection to Redis
-2025-06-25 19:57:10.439 | INFO     | __main__:run:338 - ***Bot started***

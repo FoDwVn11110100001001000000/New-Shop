@@ -3,6 +3,7 @@ This module contains classes for working with the database.
 """
 
 from datetime import datetime
+from decimal import Decimal
 from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
 from aiogram.types import Message, CallbackQuery
@@ -144,7 +145,7 @@ class UserDb(Telegram):
         with self.session:
             user = self.session.query(User).filter_by(telegram_id=telegram.telegram_id).first()
             if user:
-                user.balance += topup_quantity
+                user.balance += Decimal(str(topup_quantity))
                 self.session.commit()
                 log.info(
                     f'ID: {telegram.telegram_id}| Username: {telegram.username}| '
@@ -383,12 +384,10 @@ class SelllogDb:
     """
     Database class for handling sell logs.
     """
-    def __init__(self, telegram_id: str, username: str, name: str) -> None:
+    def __init__(self) -> None:
         self.user = User
         self.session = session
-        self.telegram_id = telegram_id
-        self.username = username
-        self.name = name
+        self.telegram = Telegram()
 
     def count_rows(self) -> str:
         """
@@ -401,12 +400,19 @@ class SelllogDb:
             count = self.session.query(
                 func.count(SellLog.id)
                 ).filter(
-                    SellLog.telegram_id == self.telegram_id
+                    SellLog.telegram_id == self.telegram.telegram_id
                     ).scalar()
-            log.info(f'ID: {self.telegram_id}| Username: {self.username}| Count: {count}')
+            log.info(f'ID: {self.telegram.telegram_id}| Username: {self.telegram.username}| Count: {count}')
             return str(count)
 
-    def sell_log(self, folder_name: str, filename: str, price: float) -> None:
+    def sell_log(
+            self,
+            folder_name: str,
+            filename: str,
+            price: float,
+            content: str,
+            obj: Message|CallbackQuery
+        ) -> None:
         """
         Adds a sell log to the database.A
 
@@ -415,24 +421,27 @@ class SelllogDb:
             filename (str): The name of the file that was sold.
             price (float): The price of the sell.
         """
+        telegram = self.telegram.data(obj)
+
         with self.session:
             sell_log = SellLog(
-                telegram_id=self.telegram_id,
+                telegram_id=telegram.telegram_id,
                 time=datetime.now(tz),
-                name=self.name,
-                username=self.username,
+                name=telegram.name,
+                username=telegram.username,
                 type=folder_name,
                 filename=filename,
+                content=content,
                 price= price
             )
             self.session.add(sell_log)
             self.session.commit()
             log.info(
-                f'ID: {self.telegram_id}| Username: {self.username}| '
+                f'ID: {telegram.telegram_id}| Username: {telegram.username}| '
                 f'Added sell log to the database'
                 )
 
-    def topup_log(self, folder_name: str, filename: str, price: float) -> None:
+    def topup_log(self, folder_name: str, filename: str, price: float, obj: Message|CallbackQuery) -> None:
         """
         Adds a topup log to the database.
 
@@ -441,13 +450,14 @@ class SelllogDb:
             filename (str): The name of the file that was topped up.
             price (float): The price of the topup.
         """
+        telegram = self.telegram.data(obj)
 
         with self.session:
             sell_log = SellLog(
-                telegram_id=self.telegram_id,
+                telegram_id=telegram.telegram_id,
                 time=datetime.now(tz),
-                name=self.name,
-                username=self.username,
+                name=telegram.name,
+                username=telegram.username,
                 type=folder_name,
                 filename=filename,
                 price= price
@@ -455,8 +465,8 @@ class SelllogDb:
             self.session.add(sell_log)
             self.session.commit()
             log.info(
-                f'ID: {self.telegram_id}| '
-                f'Username: {self.username}| Added topup log to the database'
+                f'ID: {telegram.telegram_id}| '
+                f'Username: {telegram.username}| Added topup log to the database'
             )
 
 
@@ -600,4 +610,16 @@ class AccountDb(Telegram):
                 .limit(quantity)
                 .all()
             )
-            return [{lot.lot_type: lot.txt} for lot in lots]
+            return [{'filename': lot.filename ,lot.lot_type: lot.txt} for lot in lots]
+
+    def delete_by_filename(self, filename: str) -> None:
+        """
+        Deletes an account from the database by filename.
+        Args:
+            filename (str): The filename of the account to delete.
+        """
+        with self.session:
+            self.session.query(Account).filter(
+                Account.filename == filename
+            ).delete(synchronize_session=False)
+            self.session.commit()

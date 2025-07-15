@@ -5,7 +5,8 @@ This module contains classes for working with the database.
 from datetime import datetime
 from pytz import timezone
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, BigInteger, Text, ForeignKey
+from decimal import Decimal
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, BigInteger, Text, ForeignKey, Numeric
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, validates
 from env import Config as config
@@ -26,7 +27,7 @@ class User(Base):
     telegram_id = Column(BigInteger, unique=True)
     name = Column(String)
     username = Column(String)
-    balance = Column(Float)
+    balance = Column(Numeric(precision=5, scale=2), default=Decimal('0.00'))
     language = Column(String)
     last_visit = Column(DateTime)
     is_ban = Column(Boolean, default=False)
@@ -52,6 +53,7 @@ class SellLog(Base):
     username = Column(String)
     type = Column(String)
     filename = Column(String)
+    content = Column(Text, unique=True)
     price = Column(String)
 
     # Relationships

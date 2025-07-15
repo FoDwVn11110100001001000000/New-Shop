@@ -35,3 +35,4 @@ class Strings:
     payment_exception = "Оплата не прошла"
     topup_exception = 'Ошибка при пополнении баланса'
     topup_success = 'Баланс пополнен на . Приятных покупок'
+    redis_expire = 'Срок резерва истек.'

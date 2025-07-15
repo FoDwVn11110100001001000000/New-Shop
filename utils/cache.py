@@ -120,3 +120,20 @@ class RedisManager:
                 lots = json.loads(raw)
                 types.extend(lots)
         return types
+
+    async def clear_reserved(self, telegram_id: int) -> None:
+        """
+        Clears all reserved lots for a given telegram_id from the Redis database.
+
+        Args:
+            telegram_id (int): Telegram user ID.
+
+        Returns:
+            None: This function does not return any value.
+        """
+        keys = await self.client.keys(f"{telegram_id}")
+        if keys:
+            await self.client.delete(*keys)
+            log.info(f"ID: {telegram_id}| Cleared reserved lots.")
+        else:
+            log.info(f"ID: {telegram_id}| No reserved lots to clear.")

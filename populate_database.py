@@ -30,6 +30,7 @@ def populate_db():
                 username=user.username,
                 type=random.choice(['PDF', 'IMG', 'DOC']),
                 filename=fake.file_name(extension=random.choice(['pdf', 'jpg', 'doc'])),
+                content=fake.text(max_nb_chars=1000),
                 price=str(round(random.uniform(5.0, 100.0), 2)),
             )
             session.add(sell_log)
