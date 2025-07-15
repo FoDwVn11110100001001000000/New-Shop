@@ -125,7 +125,10 @@ class Main:
         telegram_id = self.telegram.data(obj=callback).telegram_id
         reserved_lots = await self.redis.get_all_reserved_types(telegram_id=telegram_id)
         account_stats = self.account.get_description_main()
-        substracted_stats = substract_lots(account_stats, reserved_lots)
+
+        substracted_stats = substract_lots(
+            db_stats=account_stats, reserved_lots=reserved_lots)
+        
 
         for lot_type, price, quantity in substracted_stats:
             text += f"*{lot_type}* /// $*{price}* /// *{quantity}**{var.pcs}*\n"
@@ -235,12 +238,6 @@ class Main:
     async def purchase(self, callback: CallbackQuery, state: FSMContext) -> None:
         manager = StateManager(state)
         lot_data = await manager.get_all_data()
-
-        #{'lot_type': 'type1', 'available_quantity': 5, 
-        # 'lots': [{'filename': 'maybe-pr.txt', 
-        # 'type1': 'Interesting center order. Thing energy himself. Contain picture remember.'}, 
-        # {'filename': 'return-r.txt', 'type1': 'Writer fish course space between issue strategy. See admit yes admit.'}], 
-        # 'lot_quantity': 2, 'lot_total_price': 2.0}
 
         desc = (
             f'{var.lot_list}: {lot_data.get("lot_type")}\n'
