@@ -413,8 +413,7 @@ class SelllogDb:
         """
         with self.session:
             count = self.session.query(
-                func.count(SellLog.id)
-                ).filter(
+                func.count(SellLog.id)).filter(
                     SellLog.telegram_id == self.telegram.telegram_id
                     ).scalar()
             log.info(
@@ -716,3 +715,21 @@ class AccountDb(Telegram):
         except IntegrityError:
             self.session.rollback()
             log.error(f"Account already exists: {new_account}. Added by: {added_by}")
+
+    def update_price_by_lot_type(self, lot_type: str, new_price: float) -> None:
+        """
+        Updates the price of all accounts with a given lot type.
+
+        Args:
+            lot_type (str): The type of the lots to update.
+            new_price (float): The new price of the lots.
+
+        Returns:
+            None
+        """
+        with self.session:
+            self.session.query(Account) \
+                .filter(Account.lot_type == lot_type) \
+                .update({Account.price: new_price}, synchronize_session=False)
+            self.session.commit()
+        log.info(f"Price updated for {lot_type} to {new_price}")

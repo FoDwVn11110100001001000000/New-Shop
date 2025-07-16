@@ -53,7 +53,8 @@ class Strings:
     admin_change_balance_balance = 'Введите сумму, на которую хотите изменить баланс.\nЕсли значение положительное, то будет добавление, если отрицательное, то вычитание.'
     admin_change_balance_error = 'Не удалось изменить баланс пользователя {username}'
     admin_change_balance_success = 'Баланс пользователя {username} успешно изменен на {change_balance}.'
-
-
     admin_change_price = 'Изменить цену товара'
+    admin_change_price_type = 'Выберите тип товара которому хотите изменить цену'
+    admin_change_price_desc = '{lot_type}\nУкажите новую цену.'
+    admin_change_price_success = 'Цена товара {lot_type} успешно изменена на {new_price}'
     

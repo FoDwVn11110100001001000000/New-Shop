@@ -75,6 +75,11 @@ class Main:
         self.dp.register_message_handler(self.admin_change_balance_username, state=StateList.ADMIN_CHANGE_BALANCE)
         self.dp.register_message_handler(self.admin_change_balance_handle, state=StateList.ADMIN_CHANGE_BALANCE)
         self.dp.register_message_handler(self.admin_add_lots_input, state=StateList.ADMIN_ADD_LOTS)
+        self.dp.register_callback_query_handler(
+            self.admin_change_price_input,
+            lambda callback_query: callback_query.data.startswith('admin_change_price:'),
+            state=StateList.ADMIN_CHANGE_PRICE)
+        self.dp.register_message_handler(self.admin_change_price_handle, state=StateList.ADMIN_CHANGE_PRICE)
         self.dp.register_message_handler(
             self.handle_zip_file,
             content_types=ContentTypes.DOCUMENT,
@@ -564,8 +569,6 @@ class Main:
             text = var.admin_change_balance_error.format(
                 username=username)
 
-        
-
         keyboard = self.keyboard.one_button()
         await self.send_keyboard.keyboard(
             obj=message,
@@ -573,12 +576,63 @@ class Main:
             keyboard=keyboard
         )
 
-
-
     @exception_handler
     async def admin_change_price(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
-        print('admin_change_price')
+
+        keyboard = self.keyboard.admin_change_lot_price(lot_types=self.account.get_lot_type())
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=var.admin_change_price_type,
+            keyboard=keyboard
+        )
+        manager = StateManager(state)
+        await manager.set_state(StateList.ADMIN_CHANGE_PRICE)
+
+    @exception_handler
+    async def admin_change_price_input(self, callback: CallbackQuery, state: FSMContext) -> None:
+        lot_type = callback.data.split(':')[-1]
+
+        manager = StateManager(state)
+        await manager.set_data(key="lot_type", value=lot_type)
+
+        text = var.admin_change_price_desc.format(lot_type=lot_type)
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=text,
+            keyboard=keyboard
+        )
+
+    @exception_handler
+    async def admin_change_price_handle(self, message: Message, state: FSMContext) -> None:
+        try:
+            new_price = float(message.text.strip())
+            if new_price <= 0:
+                raise ValueError
+        except ValueError:
+            await message.answer(var.admin_add_lots_exception)
+            await self.main_menu(message, state)
+            return
+
+        manager = StateManager(state)
+        data = await manager.get_all_data()
+        lot_type = data.get('lot_type')
+
+        self.account.update_price_by_lot_type(
+            lot_type=lot_type, new_price=new_price)
+
+        text = var.admin_change_price_success.format(
+            lot_type=lot_type, new_price=new_price
+        )
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=message,
+            text=text,
+            keyboard=keyboard
+        )
 
     @exception_handler
     async def run(self):

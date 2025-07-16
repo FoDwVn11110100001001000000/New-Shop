@@ -161,3 +161,13 @@ class Keyboards:
             InlineKeyboardButton(var.main_menu, callback_data='main_menu')
         )
         return keyboard
+
+    def admin_change_lot_price(self, lot_types: list[str]) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup(row_width=1)
+
+        for lot in lot_types:
+            keyboard.add(
+                InlineKeyboardButton(lot, callback_data=f'admin_change_price:{lot}'),
+            )
+        keyboard.add(InlineKeyboardButton(var.main_menu, callback_data='main_menu'))
+        return keyboard
