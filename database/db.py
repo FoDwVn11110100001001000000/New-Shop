@@ -5,7 +5,7 @@ This module contains classes for working with the database.
 from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import func
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError, NoResultFound
 from aiogram.types import Message, CallbackQuery
 from utils.logs import log
 from database.models import User, SellLog, Account,tz, session
@@ -153,7 +153,8 @@ class UserDb(Telegram):
                     )
                 return True
             else:
-                log.error(f'ID: {telegram.telegram_id}| Username: {telegram.username}| User not found')
+                log.error(
+                    f'ID: {telegram.telegram_id}| Username: {telegram.username}| User not found')
                 return False
 
     def get_balance(self) -> str|None:
@@ -379,6 +380,20 @@ class UserDb(Telegram):
                 )
                 return None, None
 
+    def change_user_balance(self, username: str, change_balance: float | Decimal) -> bool:
+        with self.session:
+            try:
+                user = self.session.query(User).filter_by(username=username).one()
+            except NoResultFound:
+                log.error(f"Пользователь с username '{username}' не найден.")
+                return False
+
+            user.balance += Decimal(change_balance)
+
+            self.session.commit()
+            log.info(f"Username: {username}| Новый баланс: {user.balance}")
+            return True
+
 
 class SelllogDb:
     """
@@ -402,7 +417,9 @@ class SelllogDb:
                 ).filter(
                     SellLog.telegram_id == self.telegram.telegram_id
                     ).scalar()
-            log.info(f'ID: {self.telegram.telegram_id}| Username: {self.telegram.username}| Count: {count}')
+            log.info(
+                f'ID: {self.telegram.telegram_id}| Username: {self.telegram.username}| Count: {count}'
+            )
             return str(count)
 
     def sell_log(
@@ -449,7 +466,12 @@ class SelllogDb:
                 )
                 return filename
 
-    def topup_log(self, folder_name: str, filename: str, price: float, obj: Message|CallbackQuery) -> None:
+    def topup_log(
+            self, folder_name: str,
+            filename: str,
+            price: float,
+            obj: Message|CallbackQuery
+        ) -> None:
         """
         Adds a topup log to the database.
 
@@ -476,6 +498,28 @@ class SelllogDb:
                 f'ID: {telegram.telegram_id}| '
                 f'Username: {telegram.username}| Added topup log to the database'
             )
+
+    def exists_by_filename(self, obj: Message|CallbackQuery, filename: str) -> bool:
+        """
+        Checks if a sell log with the given filename exists in the database.
+
+        Args:
+            filename (str): The filename to be checked.
+
+        Returns:
+            bool: True if the filename exists, False otherwise.
+        """
+        telegram = self.telegram.data(obj)
+        with self.session:
+            exists = self.session.query(
+                self.session.query(SellLog).filter_by(filename=filename).exists()
+            ).scalar()
+
+        log.info(
+            f'ID: {telegram.telegram_id}| Username: {telegram.username}| '
+            f'Filename "{filename}" exists: {exists}'
+        )
+        return exists
 
 
 class AccountDb(Telegram):
@@ -549,7 +593,7 @@ class AccountDb(Telegram):
             )
         return results
 
-    def get_lot_details(self, lot_type: str) -> tuple[str, float, int]:        
+    def get_lot_details(self, lot_type: str) -> tuple[str, float, int]:
         """
         Retrieves the details of a specific lot type.
 
@@ -642,6 +686,20 @@ class AccountDb(Telegram):
         price: float,
         added_by: str
     ) -> Account | None:
+        """
+        Creates a new account in the database.
+
+        Args:
+            lot_type (str): The type of the lot.
+            lot_format (str): The format of the lot.
+            filename (str): The filename of the lot.
+            txt (str): The text of the lot.
+            price (float): The price of the lot.
+            added_by (str): The telegram ID of the user who added the lot.
+
+        Returns:
+            Account | None: The newly created account if successful, None if not.
+        """
         new_account = Account(
             lot_type=lot_type,
             lot_format=lot_format,
@@ -651,9 +709,10 @@ class AccountDb(Telegram):
             added_by=added_by
         )
         try:
-            with self.session.begin():
+            with self.session:
                 self.session.add(new_account)
-            return new_account
+                self.session.commit()
+            log.info(f"Account created: {filename}. Added by: {added_by}")
         except IntegrityError:
             self.session.rollback()
-            return None
+            log.error(f"Account already exists: {new_account}. Added by: {added_by}")

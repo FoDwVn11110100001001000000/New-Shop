@@ -6,6 +6,7 @@ class StateList(StatesGroup):
     LOT_MENU = State()
     TOPUP_BALANCE = State()
     ADMIN_ADD_LOTS = State()
+    ADMIN_CHANGE_BALANCE = State()
 
 
 class StateManager:

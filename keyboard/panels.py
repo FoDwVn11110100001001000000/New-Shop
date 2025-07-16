@@ -161,4 +161,3 @@ class Keyboards:
             InlineKeyboardButton(var.main_menu, callback_data='main_menu')
         )
         return keyboard
-

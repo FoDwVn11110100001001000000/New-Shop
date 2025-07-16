@@ -42,11 +42,18 @@ class Strings:
     admin_add_lots_desc = 'Укажите имя лота и цену через запятую.\nПример:\nKleinanzeigen (GMX.COM), 10'
     admin_add_lots_exception = 'Не правильный формат ввода данных'
     admin_add_lots_zip = 'Отправь сюда zip архив в котором будут txt файлы с куками'
+    admin_add_lots_final_message = 'Вы успешно добавили {success_added} из {total_len} товаров.'
     zip_archive_exception = 'Неправильный формат архива'
     download_error = 'Не удалось скачать файл'
     no_files = 'В архиве нет файлов'
     duplicate_logs = 'Обнаружен дубликат при покупке. Файл: '
     duplicate_download = 'Обнаружен дубликат при загрузке. Файл: '
     admin_change_balance = 'Пополнить баланс'
+    admin_change_balance_username = 'Введите юзернейм, которому хотите изменить баланс.'
+    admin_change_balance_balance = 'Введите сумму, на которую хотите изменить баланс.\nЕсли значение положительное, то будет добавление, если отрицательное, то вычитание.'
+    admin_change_balance_error = 'Не удалось изменить баланс пользователя {username}'
+    admin_change_balance_success = 'Баланс пользователя {username} успешно изменен на {change_balance}.'
+
+
     admin_change_price = 'Изменить цену товара'
     

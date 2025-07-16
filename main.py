@@ -72,6 +72,8 @@ class Main:
             )
         self.dp.register_message_handler(self.handle_lot_input, state=StateList.LOT_MENU)
         self.dp.register_message_handler(self.handle_topup_input, state=StateList.TOPUP_BALANCE)
+        self.dp.register_message_handler(self.admin_change_balance_username, state=StateList.ADMIN_CHANGE_BALANCE)
+        self.dp.register_message_handler(self.admin_change_balance_handle, state=StateList.ADMIN_CHANGE_BALANCE)
         self.dp.register_message_handler(self.admin_add_lots_input, state=StateList.ADMIN_ADD_LOTS)
         self.dp.register_message_handler(
             self.handle_zip_file,
@@ -485,9 +487,15 @@ class Main:
         manager = StateManager(state)
         data = await manager.get_all_data()
 
-
+        success_added = 0
         for filename, content in extracted_files:
-            result = self.account.create_account(
+            if self.selllog.exists_by_filename(obj=message, filename=filename):
+                await self.bot.send_message(
+                    chat_id=config.my_id, text=f"{var.duplicate_download}{filename}")
+                await message.answer(f'{var.duplicate_download}{filename}')
+                continue
+
+            self.account.create_account(
                 lot_type=data.get('lot_type'),
                 lot_format='txt',
                 filename=filename,
@@ -495,17 +503,77 @@ class Main:
                 price=data.get('price'),
                 added_by=message.from_user.username
             )
-            if not result:
-                await self.bot.send_message(chat_id=config.my_id, text=f"{var.duplicate_download}{filename}")
-                await message.answer(f'{var.duplicate_download}{filename}')
-                continue
+            success_added += 1
 
+        text = var.admin_add_lots_final_message.format(
+            success_added=success_added,
+            total_len=len(extracted_files)
+        )
 
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=message,
+            text=text,
+            keyboard=keyboard
+        )
 
     @exception_handler
     async def admin_change_balance(self, callback: CallbackQuery, state: FSMContext) -> None:
         await state.finish()
-        print('admin_change_balance')
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=callback,
+            text=var.admin_change_balance_username,
+            keyboard=keyboard
+        )
+        manager = StateManager(state)
+        await manager.set_state(StateList.ADMIN_CHANGE_BALANCE)
+
+    @exception_handler
+    async def admin_change_balance_username(self, message: Message, state: FSMContext) -> None:
+        manager = StateManager(state)
+        data = await manager.get_all_data()
+
+        if data.get('username', False):
+            await self.admin_change_balance_handle(message, state)
+            return
+
+        await manager.set_data(key="username", value=message.text.strip())
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=message,
+            text=var.admin_change_balance_balance,
+            keyboard=keyboard
+        )
+
+    @exception_handler
+    async def admin_change_balance_handle(self, message: Message, state: FSMContext) -> None:
+        manager = StateManager(state)
+        data = await manager.get_all_data()
+
+        username = data.get('username')
+        balance = float(message.text.strip())
+
+        is_changed = self.user.change_user_balance(username=username, change_balance=balance)
+        if is_changed:
+            text = var.admin_change_balance_success.format(
+                username=username, change_balance=balance)
+        else:
+            text = var.admin_change_balance_error.format(
+                username=username)
+
+        
+
+        keyboard = self.keyboard.one_button()
+        await self.send_keyboard.keyboard(
+            obj=message,
+            text=text,
+            keyboard=keyboard
+        )
+
+
 
     @exception_handler
     async def admin_change_price(self, callback: CallbackQuery, state: FSMContext) -> None:
